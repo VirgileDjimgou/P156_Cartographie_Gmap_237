@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.yarolegovich:lovelyinput-1.0.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/lovelyinput-1.0.9.aar/17755fd581b86d8d8581e0ca850b9b5e/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/lovelyinput-1.0.9.aar/17755fd581b86d8d8581e0ca850b9b5e/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yarolegovich/lovelyinput/1.0.9/20189f0417414c66f87dca2f0590e2db7e6874b9/lovelyinput-1.0.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
