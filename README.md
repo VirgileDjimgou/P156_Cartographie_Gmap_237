@@ -4,17 +4,11 @@ An Android App for generating / assiociating Custom Place (geographical local Na
  with  goole Maps Points . this able ist able to communicate with Firebase Backend
  , save the new Custom Points/Places , re-use / viewing that with google geolocation Api / google maps .
 
+
 [<img src="https://f-droid.org/badge/get-it-on.png"
-      alt="Get it on Google Play"
-      height="80">](https://play.google.com/store/apps/details?)
-      
-      
-[<img src="https://f-droid.org/badge/get-it-on.png"
-      alt="Get it on F-Droid"
-      height="80">](https://f-droid.org/app/com.workingagenda.fissure)
       [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play"
-      height="80">](https://play.google.com/store/apps/details?id=com.workingagenda.fissure)
+      height="80">](https://play.google.com/store/apps/details?)
 
 
 
