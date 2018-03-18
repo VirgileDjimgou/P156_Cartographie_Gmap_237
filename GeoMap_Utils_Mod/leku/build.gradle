@@ -1,0 +1,121 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'twitter-gradle-plugin'
+apply from: '../quality.gradle'
+
+def versionMajor = getVersionMajor()
+def versionMinor = getVersionMinor()
+def versionPatch = getVersionPatch()
+
+group = 'com.schibstedspain.android'
+version = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+android {
+  compileSdkVersion 27
+  buildToolsVersion '27.0.3'
+  resourcePrefix 'leku_'
+
+  defaultConfig {
+    minSdkVersion 15
+    targetSdkVersion 27
+    versionCode 1
+    versionName "1.0"
+    multiDexEnabled true
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles 'lib-proguard-rules.txt'
+    vectorDrawables.useSupportLibrary = true
+  }
+
+  flavorDimensions 'tier'
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  dexOptions {
+    preDexLibraries "true" != System.getenv("TRAVIS")
+  }
+  packagingOptions {
+    exclude 'protobuf.meta'
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+  def supportVersion = '27.0.2'
+  implementation "com.android.support:appcompat-v7:$supportVersion"
+  implementation "com.android.support:design:$supportVersion"
+
+  def playServicesVersion = '11.8.0'
+  implementation "com.google.android.gms:play-services-maps:$playServicesVersion"
+  implementation "com.google.android.gms:play-services-location:$playServicesVersion"
+  implementation "com.google.android.gms:play-services-places:$playServicesVersion"
+
+  implementation 'pl.charmas.android:android-reactive-location2:2.0@aar'
+
+  implementation "io.reactivex:rxandroid:1.2.1"
+  implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+  implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+  implementation 'nl.littlerobots.rxlint:rxlint:1.6'
+
+  androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+  androidTestImplementation 'com.android.support.test:runner:1.0.1'
+  androidTestImplementation 'com.android.support.test:rules:1.0.1'
+  androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
+  androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+  androidTestImplementation 'org.mockito:mockito-core:2.12.0'
+}
+
+publish {
+  userOrg = 'schibstedspain'
+  groupId = 'com.schibstedspain.android'
+  artifactId = 'leku'
+  publishVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
+  desc = 'Location picker component for Android. It returns a latitude,longitude and an address based on the location picked in the LocationPickerActivity provided.'
+  website = 'https://github.com/SchibstedSpain/leku'
+}
+
+twitterPlugin {
+  consumerKey = System.getenv()['TWITTER_API_KEY']
+  consumerSecret = System.getenv()['TWITTER_API_SECRET']
+  accessToken = System.getenv()['TWITTER_ACCESS_TOKEN']
+  accessTokenSecret = System.getenv()['TWITTER_ACCESS_TOKEN_SECRET']
+  message = "New Leku version ${versionMajor}.${versionMinor}.${versionPatch} available for download. Check out the details at https://github.com/SchibstedSpain/Leku @SchibstedEng #Android #library #AndroidDev"
+}
+
+def getVersionMajor() {
+  def content = file('../version.properties')
+
+  Properties properties = new Properties()
+  InputStream is = new ByteArrayInputStream(content.getBytes())
+  properties.load(is)
+
+  return properties['MAJOR'].toInteger()
+}
+
+def getVersionMinor() {
+  def content = file('../version.properties')
+
+  Properties properties = new Properties()
+  InputStream is = new ByteArrayInputStream(content.getBytes())
+  properties.load(is)
+
+  return properties['MINOR'].toInteger()
+}
+
+def getVersionPatch() {
+  def content = file('../version.properties')
+
+  Properties properties = new Properties()
+  InputStream is = new ByteArrayInputStream(content.getBytes())
+  properties.load(is)
+
+  return properties['PATCH'].toInteger()
+}

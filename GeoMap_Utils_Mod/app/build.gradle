@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+apply from: '../quality.gradle'
+
+android {
+  compileSdkVersion 27
+  buildToolsVersion '27.0.2'
+
+  defaultConfig {
+    applicationId "com.schibsted.mappicker"
+    minSdkVersion 15
+    targetSdkVersion 27
+    versionCode 1
+    versionName "1.0"
+    vectorDrawables.useSupportLibrary = true
+  }
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  dexOptions {
+    preDexLibraries !"true".equals(System.getenv("TRAVIS"))
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.android.support:appcompat-v7:27.0.2'
+  implementation project(':leku')
+}

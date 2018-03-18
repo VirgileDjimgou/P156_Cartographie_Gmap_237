@@ -1,0 +1,25 @@
+# Leku
+-keep interface com.schibstedspain.** { *; }
+-dontwarn com.schibstedspain.**
+-keep class com.schibstedspain.** { *; }
+
+# RxJava
+-dontwarn rx.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+# Retrolambda
+-dontwarn java.lang.invoke.*
+
+# Reactive Location Provider 2
+-dontwarn pl.charmas.android.reactivelocation2.**
+-keep interface pl.charmas.android.reactivelocation2.** { *; }
+-keep class pl.charmas.android.reactivelocation2.** { *; }
