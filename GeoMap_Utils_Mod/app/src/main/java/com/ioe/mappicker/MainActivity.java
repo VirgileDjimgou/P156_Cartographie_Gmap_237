@@ -1,4 +1,4 @@
-package com.schibsted.mappicker;
+package com.ioe.mappicker;
 
 import android.content.Intent;
 import android.location.Address;
@@ -9,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import com.schibstedspain.leku.LekuPoi;
-import com.schibstedspain.leku.LocationPicker;
-import com.schibstedspain.leku.LocationPickerActivity;
-import com.schibstedspain.leku.tracker.LocationPickerTracker;
-import com.schibstedspain.leku.tracker.TrackEvents;
+import com.ioengine.geo_map.LekuPoi;
+import com.ioengine.geo_map.LocationPicker;
+import com.ioengine.geo_map.LocationPickerActivity;
+import com.ioengine.geo_map.tracker.LocationPickerTracker;
+import com.ioengine.geo_map.tracker.TrackEvents;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

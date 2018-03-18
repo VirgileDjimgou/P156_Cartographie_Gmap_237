@@ -1,4 +1,4 @@
-package com.schibsted.mappicker;
+package com.ioe.mappicker;
 
 import android.app.Application;
 

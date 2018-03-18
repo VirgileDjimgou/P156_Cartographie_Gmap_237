@@ -1,4 +1,4 @@
-package com.schibstedspain.leku.permissions;
+package com.ioengine.geo_map.permissions;
 
 import android.Manifest;
 import android.app.Activity;

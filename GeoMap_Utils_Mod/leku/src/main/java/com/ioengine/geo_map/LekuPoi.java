@@ -1,4 +1,4 @@
-package com.schibstedspain.leku;
+package com.ioengine.geo_map;
 
 import android.location.Location;
 import android.os.Parcel;

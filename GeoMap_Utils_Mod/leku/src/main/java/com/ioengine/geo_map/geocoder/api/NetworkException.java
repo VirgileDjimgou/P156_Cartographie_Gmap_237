@@ -1,4 +1,4 @@
-package com.schibstedspain.leku.geocoder.api;
+package com.ioengine.geo_map.geocoder.api;
 
 public class NetworkException extends RuntimeException {
   public NetworkException() {

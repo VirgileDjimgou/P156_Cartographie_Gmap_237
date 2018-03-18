@@ -1,4 +1,4 @@
-package com.schibstedspain.leku;
+package com.ioengine.geo_map;
 
 import com.google.android.gms.maps.model.LatLng;
 import java.util.Locale;

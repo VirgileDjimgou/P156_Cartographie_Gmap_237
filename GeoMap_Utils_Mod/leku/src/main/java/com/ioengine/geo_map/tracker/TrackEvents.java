@@ -1,4 +1,4 @@
-package com.schibstedspain.leku.tracker;
+package com.ioengine.geo_map.tracker;
 
 public enum TrackEvents {
   googleApiConnectionFailed("Connection Failed"),

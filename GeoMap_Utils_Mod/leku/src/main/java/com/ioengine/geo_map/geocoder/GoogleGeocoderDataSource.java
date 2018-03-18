@@ -1,9 +1,9 @@
-package com.schibstedspain.leku.geocoder;
+package com.ioengine.geo_map.geocoder;
 
 import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;
-import com.schibstedspain.leku.geocoder.api.AddressBuilder;
-import com.schibstedspain.leku.geocoder.api.NetworkClient;
+import com.ioengine.geo_map.geocoder.api.AddressBuilder;
+import com.ioengine.geo_map.geocoder.api.NetworkClient;
 import io.reactivex.Observable;
 import java.util.List;
 import java.util.Locale;

@@ -1,6 +1,6 @@
-package com.schibstedspain.leku;
+package com.ioengine.geo_map;
 
-import com.schibstedspain.leku.tracker.LocationPickerTracker;
+import com.ioengine.geo_map.tracker.LocationPickerTracker;
 
 public class LocationPicker {
 

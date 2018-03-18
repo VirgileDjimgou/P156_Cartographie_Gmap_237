@@ -1,4 +1,4 @@
-package com.schibstedspain.leku.geocoder.api;
+package com.ioengine.geo_map.geocoder.api;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

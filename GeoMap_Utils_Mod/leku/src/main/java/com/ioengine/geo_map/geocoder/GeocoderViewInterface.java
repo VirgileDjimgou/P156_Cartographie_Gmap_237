@@ -1,4 +1,4 @@
-package com.schibstedspain.leku.geocoder;
+package com.ioengine.geo_map.geocoder;
 
 import android.location.Address;
 import android.location.Location;

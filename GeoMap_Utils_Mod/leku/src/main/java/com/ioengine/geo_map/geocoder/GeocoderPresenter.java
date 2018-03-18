@@ -1,11 +1,11 @@
-package com.schibstedspain.leku.geocoder;
+package com.ioengine.geo_map.geocoder;
 
 import android.annotation.SuppressLint;
 import android.location.Address;
 import android.support.annotation.NonNull;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.schibstedspain.leku.geocoder.places.GooglePlacesDataSource;
+import com.ioengine.geo_map.geocoder.places.GooglePlacesDataSource;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;

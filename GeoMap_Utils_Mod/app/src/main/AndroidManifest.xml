@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.schibsted.mappicker"
+          package="com.ioe.mappicker"
     >
 
   <uses-permission android:name="android.permission.INTERNET"/>
@@ -14,7 +14,7 @@
   <uses-feature android:name="android.hardware.location.gps" android:required="false"  />
 
   <application
-      android:name=".SampleApplication"
+      android:name="com.ioe.mappicker.SampleApplication"
       android:allowBackup="true"
       android:fullBackupContent="true"
       android:icon="@mipmap/ic_launcher"
@@ -41,7 +41,7 @@
         android:value="AIzaSyAr1zz4D73tgDLmZ4R4GGIqB0HGR8CyizY"/>
 
     <activity
-        android:name=".MainActivity"
+        android:name="com.ioe.mappicker.MainActivity"
         android:label="@string/leku_app_name"
         >
       <intent-filter>
@@ -52,7 +52,7 @@
     </activity>
 
     <activity
-        android:name="com.schibstedspain.leku.LocationPickerActivity"
+        android:name="com.ioengine.geo_map.LocationPickerActivity"
         android:label="@string/leku_title_activity_location_picker"
         android:windowSoftInputMode="adjustPan"
         android:theme="@style/AppTheme.Map"
@@ -67,7 +67,7 @@
           />
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value=".MainActivity"
+          android:value="com.ioe.mappicker.MainActivity"
           />
     </activity>
   </application>
