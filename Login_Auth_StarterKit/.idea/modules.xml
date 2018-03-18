@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Login_Auth_StarterKit.iml" filepath="$PROJECT_DIR$/Login_Auth_StarterKit.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_login/app.iml" filepath="$PROJECT_DIR$/module_login/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_login/module_login.iml" filepath="$PROJECT_DIR$/module_login/module_login.iml" />
     </modules>
   </component>
 </project>

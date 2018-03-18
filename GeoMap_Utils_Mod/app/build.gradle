@@ -3,7 +3,7 @@ apply from: '../quality.gradle'
 
 android {
   compileSdkVersion 27
-  buildToolsVersion '27.0.2'
+  buildToolsVersion '27.0.3'
 
   defaultConfig {
     applicationId "com.schibsted.mappicker"
@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-  implementation fileTree(dir: 'libs', include: ['*.jar'])
-  implementation 'com.android.support:appcompat-v7:27.0.2'
+  implementation fileTree(include: ['*.jar'], dir: 'libs')
+  implementation 'com.android.support:appcompat-v7:27.+'
   implementation project(':leku')
 }

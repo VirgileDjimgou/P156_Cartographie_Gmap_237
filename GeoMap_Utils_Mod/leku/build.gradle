@@ -49,7 +49,7 @@ android {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  def supportVersion = '27.0.2'
+  def supportVersion = '27.+'
   implementation "com.android.support:appcompat-v7:$supportVersion"
   implementation "com.android.support:design:$supportVersion"
 

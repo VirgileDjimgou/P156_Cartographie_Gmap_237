@@ -1,0 +1,87 @@
+apply plugin: 'com.android.application'
+
+def playServicesVersion = '11.8.0'
+def compileSdkVer= '27'
+
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    defaultConfig {
+        applicationId "tech.ioengine.Login"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 3
+        versionName "3.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs('en', 'xxxhdpi')
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dexOptions {
+        preDexLibraries !"true".equals(System.getenv("TRAVIS"))
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    //noinspection GradleCompatible
+    def supportVersion = '27.+'
+    compile "com.android.support:support-v4:$supportVersion"
+    compile 'com.android.support:multidex:1.0.2'
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile "com.google.firebase:firebase-auth:$playServicesVersion"
+    compile "com.google.firebase:firebase-core:$playServicesVersion"
+    compile "com.google.firebase:firebase-database:$playServicesVersion"
+    compile "com.google.firebase:firebase-storage:$playServicesVersion"
+    compile "com.android.support:support-annotations:$supportVersion"
+    compile 'com.github.bumptech.glide:glide:4.0.0'
+    compile 'com.yarolegovich:lovely-dialog:1.0.4'
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile 'me.zhanghai.android.patternlock:library:2.1.2'
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile 'com.facebook.android:facebook-android-sdk:4.20.0'
+    testCompile 'junit:junit:4.12'
+    implementation("com.android.support:appcompat-v7:$supportVersion") {
+        force = true
+    }
+    implementation "com.google.firebase:firebase-messaging:$playServicesVersion"
+    // RecyclerView
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    // CardView
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile 'com.googlecode.libphonenumber:libphonenumber:6.2'
+    compile 'com.github.joielechong:countrycodepicker:2.1.5'
+    compile 'com.1gravity:android-contactpicker:1.3.2'
+
+    implementation project(':leku')
+}
+
+apply plugin: 'com.google.gms.google-services'

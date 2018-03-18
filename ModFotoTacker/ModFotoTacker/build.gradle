@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        applicationId "com.xhaka.wasist"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 5
+        versionName "0.3.6"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.commonsware.com.s3.amazonaws.com" }
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    def supportVer = '27+'
+    compile "com.android.support:appcompat-v7:$supportVer"
+    compile "com.android.support:design:$supportVer"
+    compile 'com.github.ParkSangGwon:TedPicker:v1.0.10'
+    // RecyclerView
+    compile "com.android.support:recyclerview-v7:$supportVer"
+
+    // CardView
+    compile "com.android.support:cardview-v7:$supportVer"
+
+    // Glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    // Vision api Deeplearning api
+    compile 'com.google.api-client:google-api-client-android:1.20.0' exclude module: 'httpclient'
+    compile 'com.google.http-client:google-http-client-gson:1.20.0' exclude module: 'httpclient'
+    compile 'com.google.apis:google-api-services-vision:v1-rev2-1.21.0'
+
+    // word Cloud
+    compile 'net.alhazmy13.wordcloud:library:0.2.0-beta'
+
+    // speak
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+
+
+}
