@@ -41,7 +41,7 @@
         android:value="AIzaSyAr1zz4D73tgDLmZ4R4GGIqB0HGR8CyizY"/>
 
     <activity
-        android:name="com.ioe.mappicker.MainActivity"
+        android:name="com.ioe.mappicker.MainActivity_map"
         android:label="@string/leku_app_name"
         >
       <intent-filter>
@@ -67,7 +67,7 @@
           />
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value="com.ioe.mappicker.MainActivity"
+          android:value="com.ioe.mappicker.MainActivity_map"
           />
     </activity>
   </application>

@@ -202,7 +202,7 @@ public class LocationPickerActivity extends AppCompatActivity
 
   private void setUpToolBar() {
     Toolbar toolbar = findViewById(R.id.map_search_toolbar);
-    setSupportActionBar(toolbar);
+   // setSupportActionBar(toolbar);
     if (getSupportActionBar() != null) {
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       getSupportActionBar().setDisplayShowTitleEnabled(false);

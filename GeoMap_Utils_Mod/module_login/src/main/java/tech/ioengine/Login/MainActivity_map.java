@@ -1,4 +1,4 @@
-package com.ioe.mappicker;
+package tech.ioengine.Login;
 
 import android.content.Intent;
 import android.location.Address;
@@ -9,16 +9,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.ioengine.geo_map.LekuPoi;
 import com.ioengine.geo_map.LocationPicker;
 import com.ioengine.geo_map.LocationPickerActivity;
 import com.ioengine.geo_map.tracker.LocationPickerTracker;
 import com.ioengine.geo_map.tracker.TrackEvents;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+import tech.ioengine.Login.activity.EmailLoginActivity;
+import tech.ioengine.Login.activity.SplaschScreen;
+import tech.ioengine.Login.fotopicker.CardPack.MainActivity_card;
+
+public class MainActivity_map extends AppCompatActivity {
 
   public static final int MAP_BUTTON_REQUEST_CODE = 1;
   public static final int MAP_POIS_BUTTON_REQUEST_CODE = 2;
@@ -29,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     StrictMode.setThreadPolicy(
         new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
     StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_map);
     View mapButton = findViewById(R.id.map_button);
     mapButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -107,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
         if (fullAddress != null) {
           Log.d("FULL ADDRESS****", fullAddress.toString());
         }
+
+        // Start  the photo picker ...
+
+        startActivity(new Intent(MainActivity_map.this, MainActivity_card.class));
+        // MainActivity_map.this.finish();
+
+
       } else if (requestCode == 2) {
         double latitude = data.getDoubleExtra(LocationPickerActivity.LATITUDE, 0);
         Log.d("LATITUDE****", String.valueOf(latitude));
@@ -116,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("ADDRESS****", String.valueOf(address));
         LekuPoi lekuPoi = data.getParcelableExtra(LocationPickerActivity.LEKU_POI);
         Log.d("LekuPoi****", String.valueOf(lekuPoi));
+
+        // nichts machen  ...
       }
     }
     if (resultCode == RESULT_CANCELED) {
@@ -127,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     LocationPicker.setTracker(new LocationPickerTracker() {
       @Override
       public void onEventTracked(TrackEvents event) {
-        Toast.makeText(MainActivity.this, "Event: " + event.getEventName(), Toast.LENGTH_SHORT)
+        Toast.makeText(MainActivity_map.this, "Event: " + event.getEventName(), Toast.LENGTH_SHORT)
             .show();
       }
     });

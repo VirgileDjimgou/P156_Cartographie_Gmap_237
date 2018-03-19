@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import tech.ioengine.Login.MainActivity_map;
+
 /**
  * Created by chichikolon on 07.12.2017.
  */
@@ -22,12 +24,11 @@ public class SplaschScreen extends AppCompatActivity{
         setContentView(tech.ioengine.Login.R.layout.splaschscreen);
 
 
-
         handler =  new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplaschScreen.this, AfterLogin.class);
+                Intent intent = new Intent(SplaschScreen.this, MainActivity_map.class);
                 startActivity(intent);
                 finish();
 

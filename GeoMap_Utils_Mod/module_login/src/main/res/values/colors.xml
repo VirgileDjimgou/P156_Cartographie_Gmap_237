@@ -8,6 +8,9 @@
     <color name="grey_500">#a4a4a4</color>
     <color name="grey_800">#212121</color>
 
+    <color name="leku_app_blue">#3DA8E1</color>
+    <color name="leku_app_strong_blue">#053B58</color>
+
     <color name="secondary_text">#727272</color>
 
     <color name="colorPrimary">#212121</color>
@@ -44,6 +47,10 @@
     <color name="background_dark">#263238</color>
 
 
+    <color name="default_screen_bg">#f9f9f9</color>
+    <color name="rounded_container_bg">#222222</color>
+    <color name="rounded_container_border">#3b3f44</color>
+    <color name="light_gray_header_color">#646663</color>
 
     <color name="grey_100">#F5F5F5</color>
     <color name="grey_300">#E0E0E0</color>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    >
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/title_hint"
+        android:id="@+id/titleValue"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/generateGIF"
+            android:drawableLeft="@drawable/ic_gif_black_24dp"
+            android:text="@string/generate_btn"
+            android:layout_marginLeft="10dp" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:minHeight="20dip"
+            android:maxHeight="40dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.Material.Light.ProgressBar.Large"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:id="@+id/preview"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/title_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_images"
+        style="?android:attr/listSeparatorTextViewStyle"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/short_instructions"
+        android:id="@+id/imageSelections"
+        android:layout_marginLeft="15dp" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listImage"></ListView>
+</LinearLayout>

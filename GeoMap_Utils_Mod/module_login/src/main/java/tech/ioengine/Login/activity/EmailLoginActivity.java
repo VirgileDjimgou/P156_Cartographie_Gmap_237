@@ -120,11 +120,11 @@ public class EmailLoginActivity extends AppCompatActivity {
                                     if (firstTimeAccess) {
                                         authUtils.saveUserInfo();
                                         // get actual User  ....
-                                        startActivity(new Intent(EmailLoginActivity.this, AfterLogin.class));
+                                        startActivity(new Intent(EmailLoginActivity.this, SplaschScreen.class));
                                         EmailLoginActivity.this.finish();
                                     }
                                     authUtils.saveUserInfo();
-                                    startActivity(new Intent(EmailLoginActivity.this, AfterLogin.class));
+                                    startActivity(new Intent(EmailLoginActivity.this, SplaschScreen.class));
                                     EmailLoginActivity.this.finish();
                                     finish();
                                 }

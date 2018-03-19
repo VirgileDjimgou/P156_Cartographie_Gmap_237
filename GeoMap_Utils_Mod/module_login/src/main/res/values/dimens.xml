@@ -58,6 +58,9 @@
     <dimen name="icon_text">22dp</dimen>
     <dimen name="timestamp">12dp</dimen>
 
+
+
+    <!-- Card dimen-xml. -->
     <dimen name="item_offset">10dp</dimen>
     <dimen name="detail_backdrop_height">250dp</dimen>
     <dimen name="backdrop_title">30dp</dimen>
