@@ -133,6 +133,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/Translucent" />
 
+
+        <activity
+            android:name="tech.ioengine.Login.MapAllPoints"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name="tech.ioengine.Login.activity.EmailLoginActivity"
             android:launchMode="singleTop"

@@ -129,13 +129,16 @@ public class MainActivity_map extends AppCompatActivity {
           e.printStackTrace();
         }
 
+
+        startActivity(new Intent(MainActivity_map.this, MapAllPoints.class));
+
         Intent locationPickerIntent = new LocationPickerActivity.Builder()
                 // .withLocation(41.4036299, 2.1743558)
                 .withPois(getAllSavedOnFirebasePoints())
                 .withGooglePlacesEnabled()
                 .build(getApplicationContext());
 
-        startActivityForResult(locationPickerIntent, MAP_POIS_BUTTON_REQUEST_CODE);
+        // startActivityForResult(locationPickerIntent, MAP_POIS_BUTTON_REQUEST_CODE);
       }
     });
 
@@ -278,8 +281,7 @@ public class MainActivity_map extends AppCompatActivity {
   }
 
   private  LekuPoi FetchRideInformation(String PointsKey) {
-
-    final LekuPoi[] PointGlobal = {null};
+    final LekuPoi Point = null;
     DatabaseReference historyDatabase = FirebaseDatabase.getInstance().getReference().child("Points").child(PointsKey);
     historyDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
       @SuppressLint("SetTextI18n")
@@ -308,21 +310,15 @@ public class MainActivity_map extends AppCompatActivity {
 
           }
 
-          LekuPoi Point = new LekuPoi(UUID.randomUUID().toString(), "Los bellota", location_point);
-
-
-          Point = new LekuPoi(UUID.randomUUID().toString(), "Starbucks", location_point);
-
           if(dataSnapshot.child("Place").getValue() != null){
             PlaceName = dataSnapshot.child("Place").getValue().toString();
-            Point.setAddress(PlaceName);
+//            Point.setAddress(PlaceName);
           }
 
 
-          Point.setLocation(location_point);
-          Point.setTitle("echoo Test");
+  //        Point.setLocation(location_point);
+   //        Point.setTitle("echoo Test");
 
-          PointGlobal[0] = Point;
 
         }
       }
@@ -331,7 +327,7 @@ public class MainActivity_map extends AppCompatActivity {
       }
     });
 
-    return PointGlobal[0];
+    return Point;
   }
 
 
