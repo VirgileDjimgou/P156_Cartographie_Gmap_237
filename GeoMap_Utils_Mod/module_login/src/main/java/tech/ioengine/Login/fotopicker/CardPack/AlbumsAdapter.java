@@ -33,7 +33,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
         public ImageView thumbnail, overflow;
-        public ProgressBar progressBar;
 
         public MyViewHolder(View view) {
             super(view);
@@ -41,7 +40,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
-            progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
         }
     }
 
@@ -66,9 +64,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         // holder.count.setText(cloudObjekt_dec.getResult());
         if(cloudObjekt_dec.getResponse()){
             Toast.makeText(mContext,"Response Ok" , Toast.LENGTH_LONG).show();
-            holder.progressBar.setIndeterminate(false);
-            holder.progressBar.setProgress(100);
-            //holder.progressBar.setEnabled(false);
         }
 
 

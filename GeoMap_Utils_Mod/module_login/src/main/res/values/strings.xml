@@ -33,9 +33,9 @@
 
 
     <string name="action_add_favourite">Add to Favourites</string>
-    <string name="action_play_next">Play Next</string>
-    <string name="backdrop_title">LOVE MUSIC</string>
-    <string name="backdrop_subtitle">This season top 20 albums</string>
+    <string name="action_play_next">delete</string>
+    <string name="backdrop_title">xxTTxx</string>
+    <string name="backdrop_subtitle">subtitle</string>
 
 
     <string name="action_settings">Settings</string>
@@ -402,6 +402,10 @@
     <string name="dialog_select_camera">nativ Camera</string>
     <string name="dialog_select_multiple_photo">Take multiple Photos</string>
     <string name="dialog_select_multiple_detect">multiple processing</string>
+
+    <string name="custom_title">maximun 5 photos ! </string>
+    <string name="agree"> Cool ! </string>
+    <string name="content">Bee Catographer Version 1.0. BeeTech Gmbh</string>
 
 
     <string name="image_picker_error">Something is wrong with that image. Pick a different one please.</string>

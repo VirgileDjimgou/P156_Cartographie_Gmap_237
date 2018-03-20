@@ -89,7 +89,7 @@ public class EmailLoginActivity extends AppCompatActivity {
 
                     new AlertDialog.Builder(EmailLoginActivity.this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("connected user ID ist "+user.getUid().toString())
+                            .setTitle("connected user ID ist "+user.getEmail().toString())
                             .setMessage("Are you sure you want to continue as User "+user.getEmail().toString()+ "  ?")
                             .setNegativeButton("No", new DialogInterface.OnClickListener()
                             {
@@ -273,8 +273,7 @@ public class EmailLoginActivity extends AppCompatActivity {
                                 newUser.avata = StaticConfig.STR_DEFAULT_BASE64;
                                 // FirebaseDatabase.getInstance().getReference().child("Driver/"+ user.getUid()).setValue(newUser);
 
-                                FirebaseDatabase.getInstance().getReference().child("Users").child("Customers/"+ user.getUid()).setValue(newUser);
-
+                                FirebaseDatabase.getInstance().getReference().child(StaticConfig.UserType+"/"+ user.getUid()).setValue(newUser);
                                 Toast.makeText(EmailLoginActivity.this, "Register and Login success", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(EmailLoginActivity.this, SplaschScreen.class));
                                 EmailLoginActivity.this.finish();
@@ -336,8 +335,6 @@ public class EmailLoginActivity extends AppCompatActivity {
                                 StaticConfig.UID = user.getUid();
                                 saveUserInfo();
                                 startActivity(new Intent(EmailLoginActivity.this, SplaschScreen.class));
-                                // startActivity(new Intent(EmailLoginActivity.this, MapsActivity.class));
-                                // startActivity(new Intent(EmailLoginActivity.this, LocationsOverviewActivity.class));
                                 EmailLoginActivity.this.finish();
                             }
                         }
@@ -408,13 +405,14 @@ public class EmailLoginActivity extends AppCompatActivity {
         /**
          * Save User Info  and SnapShoot  ...
          */
-        void saveUserInfo() {
+        void
+        saveUserInfo() {
 
             try{
 
                 // FirebaseDatabase.getInstance().getReference().child("Users").child("Drivers").child("Driver/"+ user.getUid()).setValue(newUser);
 
-                FirebaseDatabase.getInstance().getReference().child("Users").child("Customers/" + StaticConfig.UID).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child(StaticConfig.UserType+"/" + StaticConfig.UID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         waitingDialog.dismiss();
@@ -423,6 +421,8 @@ public class EmailLoginActivity extends AppCompatActivity {
                         userInfo.name = (String) hashUser.get("name");
                         userInfo.email = (String) hashUser.get("email");
                         userInfo.avata = (String) hashUser.get("avata");
+                        StaticConfig.STR_EXTRA_USERNAME =  userInfo.name;
+                        StaticConfig.STR_EXTRA_EMAIL = userInfo.email;
                         SharedPreferenceHelper.getInstance(EmailLoginActivity.this).saveUserInfo(userInfo);
                     }
 

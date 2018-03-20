@@ -56,16 +56,6 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_dots" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentStart="true"
-                android:indeterminate="true"
-                android:layout_below="@+id/title" />
 
         </RelativeLayout>
 

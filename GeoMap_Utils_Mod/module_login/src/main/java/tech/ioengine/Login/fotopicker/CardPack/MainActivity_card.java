@@ -1,6 +1,7 @@
 package tech.ioengine.Login.fotopicker.CardPack;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,7 +32,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,8 +42,34 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.gun0912.tedpicker.Config;
 import com.gun0912.tedpicker.ImagePickerActivity;
+import com.irozon.sneaker.Sneaker;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
+
+import tech.ioengine.Login.MainActivity_map;
 import tech.ioengine.Login.R;
+import tech.ioengine.Login.activity.EmailLoginActivity;
+import tech.ioengine.Login.activity.SplaschScreen;
+import tech.ioengine.Login.data.FriendDB;
+import tech.ioengine.Login.data.GroupDB;
+import tech.ioengine.Login.data.SharedPreferenceHelper;
+import tech.ioengine.Login.data.StaticConfig;
+import tech.ioengine.Login.model.CustomPoint;
+import tech.ioengine.Login.model.User;
+import tech.ioengine.Login.service.ServiceUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -49,27 +79,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity_card extends AppCompatActivity {
     ArrayList<Bitmap> bitmaps = new ArrayList<>();
-    ArrayList<String> images;
-    ArrayList<Uri> uris = new ArrayList<>();
-    ArrayAdapter<String> adapter_Images;
-
-    EditText editTxt;
-    ImageView prevImg;
-    String filename;
-    private ProgressBar progressBar;
-
-    private File GIF_DIR;
-    private String DEFAULT_TITLE;
-    private int COMPRESSION; // not a big diff eh?
     private int SAMPLE_SIZE = 3; // ?? unclear to me...
-    private int REPEAT;
-    private int DELAY; // milliseconds
 
+
+    private  int number_of_Images = 0 ;
     private static final String CLOUD_VISION_API_KEY = "AIzaSyDjBUzAYg2NrFS1cZkVkYKgCWoleOpI5Pg";
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
@@ -90,18 +110,33 @@ public class MainActivity_card extends AppCompatActivity {
     private AlbumsAdapter adapter;
     private List<CloudObjekt> CloudObjektList;
     private Bitmap bitmap;
+    private String  place_name ;
+    private String latitude , longitude ;
+    private LovelyProgressDialog waitingDialog;
+    private Context context;
+    private Activity ActivityInstance;
+    // private Uri resultUri;
+    public static FirebaseUser user;
+    private DatabaseReference mDriverDatabase;
+    public static FirebaseAuth mAuth;
+    public static  FirebaseAuth.AuthStateListener mAuthListener;
+    public static String requestIdUpload= "";
+    private int COMPRESSION; // not a big diff eh?
+    DatabaseReference PointsRef;
+    List<String> listfilePath = new ArrayList<String>();
+
+    FloatingActionMenu materialDesignFAM;
+    com.github.clans.fab.FloatingActionButton   About  , TakeNewPoint;
+    private com.github.clans.fab.FloatingActionButton  Licences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_card);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // initCollapsingToolbar();
-
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // setSupportActionBar(toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         CloudObjektList = new ArrayList<>();
         adapter = new AlbumsAdapter(this, CloudObjektList);
 
@@ -110,39 +145,80 @@ public class MainActivity_card extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        this.mContext = mContext;
+        this.place_name = getIntent().getStringExtra("Place_name");
+        this.latitude = getIntent().getStringExtra("Lat");
+        this.longitude  = getIntent().getStringExtra("Long");
 
-       //  prepareAlbums();
+        Sneaker.with(this)
+                .setTitle("Success!!")
+                .setMessage(" infos ... " + this.place_name + this.latitude + this.longitude)
+                .sneakSuccess();
 
-        FloatingActionButton nativeCam = (FloatingActionButton) findViewById(R.id.native_cam);
-        nativeCam.setOnClickListener(new View.OnClickListener() {
+
+        context = this.getApplicationContext();
+        waitingDialog = new LovelyProgressDialog(context);
+        ActivityInstance = this.getParent();
+
+        mAuth = FirebaseAuth.getInstance();
+        mDriverDatabase = FirebaseDatabase.getInstance().getReference().child(StaticConfig.UserType+"/").child(StaticConfig.UID);
+        PointsRef = FirebaseDatabase.getInstance().getReference().child("Points");
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity_card.this);
-                builder
-                        .setMessage(R.string.dialog_select_prompt)
-                        .setPositiveButton(R.string.dialog_select_multiple_photo, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // startGalleryChooser();
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
 
-                                showFileChooser();
-                                Snackbar.make(view, "Select Image", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                            }
-                        })
-                        .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startCamera();
-                            }
+                    mDriverDatabase = FirebaseDatabase.getInstance().getReference().child(StaticConfig.UserType+"/").child(StaticConfig.UID);
+                    Sneaker.with(ActivityInstance)
+                            .setTitle("Success!!")
+                            .setMessage("valid User ")
+                            .sneakSuccess();
 
-                        });
-                builder.create().show();
+                } else {
+                    Sneaker.with(ActivityInstance)
+                            .setTitle("Success!!")
+                            .setMessage(" invalid User !  .... ")
+                            .sneakError();
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+
+        
+        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+        About = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.About);
+        TakeNewPoint = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.SaveAnotherPoint);
+        About.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO something when floating action menu first item clicked
+
+                new MaterialDialog.Builder(MainActivity_card.this)
+                        .title(R.string.app_name)
+                        .content(R.string.content)
+                        .positiveText(R.string.agree)
+                        .show();
+
             }
         });
-        this.mContext = mContext;
 
 
-        // mImageDetails = (TextView) findViewById(R.id.image_details);
+
+        TakeNewPoint.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Intent intent = new Intent(MainActivity_card.this, MainActivity_map.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }
+
+        );
+
+
+        // initialize fab Button ...
+        // start Ted Picker  ....
+        showFileChooser();
 
     }
 
@@ -188,12 +264,13 @@ public class MainActivity_card extends AppCompatActivity {
 
                     ArrayList<Uri> image_uris = data.getParcelableArrayListExtra(ImagePickerActivity.EXTRA_IMAGE_URIS);
                     int Num_images = image_uris.size();
+                    number_of_Images = number_of_Images + Num_images;
                     Toast.makeText(this,"Number of Images : "+Num_images, Toast.LENGTH_LONG).show();
 
                     for(int i=0; i<image_uris.size(); i++) {
 
                         Uri uri = Uri.fromFile(new File(image_uris.get(i).toString()));// URI, not file, of selected File
-                        uploadImage(uri);
+                        uploadImgetoFirebase(uri , i);
                         Bitmap bitmap = null;
                         try {
 
@@ -227,6 +304,10 @@ public class MainActivity_card extends AppCompatActivity {
                        // images.add("Preview Image: " + imageId[imageId.length - 1]);
                        // uris.add(uri);
                     }
+
+                    // upload new points with reference
+                    saveNewPoints();
+
                 }
                 break;
         }
@@ -234,10 +315,12 @@ public class MainActivity_card extends AppCompatActivity {
 
 
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            uploadImage(data.getData());
+            number_of_Images = number_of_Images +1;
+            uploadImgetoFirebase(data.getData() , number_of_Images);
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            uploadImage(photoUri);
+            number_of_Images = number_of_Images +1;
+            uploadImgetoFirebase(photoUri , number_of_Images);
         }
     }
 
@@ -261,23 +344,71 @@ public class MainActivity_card extends AppCompatActivity {
         }
     }
 
-    public void uploadImage(Uri uri) {
-        System.out.println(uri);
-        if (uri != null) {
+
+    public void saveNewPoints(){
+
+
+        try{
+
+            Date date = new Date();
+            CustomPoint Point = new CustomPoint();
+            Point.namePoint = place_name;
+            Point.latitude = latitude;
+            Point.longitude = longitude;
+            Point.TimeSpan = date.toString();
+
+            String requestId = PointsRef.push().getKey();
+            requestIdUpload = requestId;
+            HashMap map = new HashMap();
+            map.put("Place", place_name);
+            map.put("UserID",StaticConfig.UID);
+            map.put("UserName", StaticConfig.STR_EXTRA_USERNAME);
+            map.put("Email" , StaticConfig.STR_EXTRA_EMAIL);
+            map.put("timestamp", date.toString());
+            map.put("lat", latitude);
+            map.put("lng", longitude);
+
+            /*
+            for(int i = 0; i < listfilePath.size(); i++) {
+                map.put("Images"+i, listfilePath.get(i).toString());
+            }
+            */
+            map.put("Images" , listfilePath);
+
+
+
+            PointsRef.child(requestId).updateChildren(map);
+            // FirebaseDatabase.getInstance().getReference().child("Driver/"+ user.getUid()).setValue(newUser);
+            // FirebaseDatabase.getInstance().getReference().child(StaticConfig.UserType+"/"+ StaticConfig.UID+"/").setValue(Point);
+            // end progress dialog ...
+            Sneaker.with(this)
+                    .setTitle("Success!!")
+                    .setMessage(" SUcces  new google Point added !!!" + this.place_name + this.latitude + this.longitude)
+                    .sneakSuccess();
+        }catch(Exception ex){
+            Sneaker.with(this)
+                    .setTitle("Error !!")
+                    .setMessage("Error ....  " + this.place_name + this.latitude + this.longitude)
+                    .sneakError();
+            ex.printStackTrace();
+
+        }
+
+    }
+
+
+    public void uploadImgetoFirebase( Uri resultUri , int numbImg){
+
+        // Update Card View  ....
+        if (resultUri != null) {
             try {
                 // scale the image to save on bandwidth
-                bitmap = scaleBitmapDown(MediaStore.Images.Media.getBitmap(getContentResolver(), uri), 1200);
+                bitmap = scaleBitmapDown(MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri), 1200);
             } catch(Exception ex){
-                    ex.printStackTrace();
+                ex.printStackTrace();
             }
 
-              try{
-                //callCloudVision(bitmap);
-                  System.out.println(bitmap.getDensity());
-                  System.out.println(bitmap.getHeight());
-
-                  // mMainImage.setImageBitmap(bitmap);
-                //  Test das muss spater weg ...
+            try{
                 new Thread(new Runnable() {
                     public void run(){
                         Integer  IndexObjekt = CloudObjektList.size();
@@ -291,18 +422,12 @@ public class MainActivity_card extends AppCompatActivity {
                         }catch(Exception ex){
                             ex.printStackTrace();
                         }
-                        try {
-                            callCloudVision(newCloudObjekt , IndexObjekt);
-                           //  Toast.makeText (mContext,"please wait .....", Toast.LENGTH_LONG).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
                 }).start();
 
-                  adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 
-              } catch (Exception e) {
+            } catch (Exception e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
             }
@@ -310,21 +435,79 @@ public class MainActivity_card extends AppCompatActivity {
             Log.d(TAG, "Image picker gave us a null image.");
             Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
         }
+
+        // upload Images in Firebase storage ....
+        try{
+
+            if(resultUri != null) {
+
+
+                String requestId = PointsRef.push().getKey();
+                StorageReference filePath = FirebaseStorage.getInstance().getReference().child("GmapImages").child(requestId);
+                listfilePath.add(filePath.toString());
+
+                // PointsRef.child("filePathPhoto"+numbImg).setValue(filePath);
+                // StorageReference filePath = FirebaseStorage.getInstance().getReference().child("GmapImages").child(number_of_Images+"-#"+requestIdUpload);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+                } catch (IOException e) {
+                    // waitingDialog.dismiss();
+                    e.printStackTrace();
+                }
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+                byte[] data = baos.toByteArray();
+                UploadTask uploadTask = filePath.putBytes(data);
+
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // getActivity().finish();
+
+                        // waitingDialog.dismiss();
+                        Sneaker.with(MainActivity_card.this)
+                                .setTitle("Success!!")
+                                .setMessage("upload photo failed ")
+                                .sneakError();
+
+                        Log.d("Upload photo failed ", "failed");
+
+                        return;
+                    }
+                });
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        // waitingDialog.dismiss();
+                        Map newImage = new HashMap();
+                        newImage.put("ImageUrl", downloadUrl.toString());
+                        mDriverDatabase.updateChildren(newImage);
+                        Sneaker.with(MainActivity_card.this)
+                                .setTitle("Success!!")
+                                .setMessage("success !!")
+                                .sneakSuccess();
+                    }
+                });
+
+            }else{
+                // waitingDialog.dismiss();
+                Sneaker.with(MainActivity_card.this)
+                        .setTitle("Success!!")
+                        .setMessage("please select a valid Image")
+                        .sneakError();
+            }
+
+        }catch(Exception ex){
+            // waitingDialog.dismiss();
+            ex.printStackTrace();
+        }
+        // waitingDialog.dismiss();
+
     }
 
-    private byte[] bitmapToByte(Bitmap bitmap){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-        return byteArray;
-    }
-
-    private void callCloudVision(final CloudObjekt CloudObjekt , final int IndexObjekt) throws IOException {
-        // Switch text to loading
-        // mImageDetails.setText(R.string.loading_message);
-        // Toast.makeText(MainActivity_card.this,"Index new Objekt : " + IndexObjekt , Toast.LENGTH_LONG).show();
-
-    }
 
     public Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
 
@@ -384,6 +567,15 @@ public class MainActivity_card extends AppCompatActivity {
     }
 
     private void showFileChooser() {
+        Config config = new Config();
+        config.setToolbarTitleRes(R.string.custom_title);
+        config.setSelectionMin(1);
+        config.setSelectionLimit(5);
+        config.setFlashOn(true);
+        ImagePickerActivity.setConfig(config);
+
+
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
