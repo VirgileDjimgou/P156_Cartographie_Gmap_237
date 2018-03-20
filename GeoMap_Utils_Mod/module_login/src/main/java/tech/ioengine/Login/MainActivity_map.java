@@ -72,6 +72,8 @@ public class MainActivity_map extends AppCompatActivity {
   private int COMPRESSION; // not a big diff eh?
   DatabaseReference PointsRef;
   List<String> listfilePath = new ArrayList<String>();
+  List<LekuPoi> CustomPoints = new ArrayList<>();
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +88,6 @@ public class MainActivity_map extends AppCompatActivity {
 
     // init firebase  ...
     PointsRef = FirebaseDatabase.getInstance().getReference().child("Points");
-
-
     mapButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -114,9 +114,26 @@ public class MainActivity_map extends AppCompatActivity {
     mapPoisButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+
+
+
+        try {
+        // reset all list and empty
+        CustomPoints.clear();
+        allSavedPoint.clear();
+        CustomPoints.removeAll(CustomPoints);
+        allSavedPoint.removeAll(allSavedPoint);
+
+          getAllSavedOnFirebasePoints();
+          // Thread.sleep(5000);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
         Intent locationPickerIntent = new LocationPickerActivity.Builder()
-                .withLocation(41.4036299, 2.1743558)
-                .withPois(getLekuPois())
+                // .withLocation(41.4036299, 2.1743558)
+                .withPois(CustomPoints)
+                .withGooglePlacesEnabled()
                 .build(getApplicationContext());
 
         startActivityForResult(locationPickerIntent, MAP_POIS_BUTTON_REQUEST_CODE);
@@ -223,54 +240,6 @@ public class MainActivity_map extends AppCompatActivity {
   }
 
 
-  public void startupload_firebase() {
-
-    try {
-
-      // inflate alert dialog xml
-      LayoutInflater li = LayoutInflater.from(context);
-      View dialogView = li.inflate(R.layout.add_new_place, null);
-      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-              context);
-      // set title
-      alertDialogBuilder.setTitle("Custom Dialog");
-      // set custom dialog icon
-      alertDialogBuilder.setIcon(R.drawable.about_location_icon);
-      // set custom_dialog.xml to alertdialog builder
-      alertDialogBuilder.setView(dialogView);
-      final EditText userInput = (EditText) dialogView
-              .findViewById(R.id.edit_name);
-      // set dialog message
-      alertDialogBuilder
-              .setCancelable(false)
-              .setPositiveButton("OK",
-                      new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,
-                                            int id) {
-                          // get user input and set it to etOutput
-                          // edit text
-                          // userInput.setText(userInput.getText());
-
-                        }
-                      })
-              .setNegativeButton("Cancel",
-                      new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,
-                                            int id) {
-                          dialog.cancel();
-                        }
-                      });
-      // create alert dialog
-      AlertDialog alertDialog = alertDialogBuilder.create();
-      // show it
-      alertDialog.show();
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-
-  }
-
   private void initializeLocationPickerTracker() {
     LocationPicker.setTracker(new LocationPickerTracker() {
       @Override
@@ -286,8 +255,8 @@ public class MainActivity_map extends AppCompatActivity {
 
   /// history  ...
 
-  private void getUserHistoryIds() {
-    DatabaseReference userHistoryDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(customerOrDriver).child(userId).child("history");
+  private void getAllSavedOnFirebasePoints() {
+    DatabaseReference userHistoryDatabase = FirebaseDatabase.getInstance().getReference().child("Points");
     userHistoryDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
@@ -303,37 +272,56 @@ public class MainActivity_map extends AppCompatActivity {
     });
   }
 
-  private void FetchRideInformation(String rideKey) {
-    DatabaseReference historyDatabase = FirebaseDatabase.getInstance().getReference().child("history").child(rideKey);
+  private void FetchRideInformation(String PointsKey) {
+    DatabaseReference historyDatabase = FirebaseDatabase.getInstance().getReference().child("Points").child(PointsKey);
     historyDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
       @SuppressLint("SetTextI18n")
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if(dataSnapshot.exists()){
-          String rideId = dataSnapshot.getKey();
-          Long timestamp = 0L;
-          String distance = "";
-          Double ridePrice = 0.0;
+          String PointId = dataSnapshot.getKey();
+          String timestamp = "";
+          String PlaceName = "";
+          String lat = "";
+          String lng = "";
+          CustomPoint Point = new CustomPoint();
+          Location locationPoi1 = new Location("Bee Fire");
 
           if(dataSnapshot.child("timestamp").getValue() != null){
-            timestamp = Long.valueOf(dataSnapshot.child("timestamp").getValue().toString());
+            timestamp = dataSnapshot.child("timestamp").getValue().toString();
+            Point.TimeSpan =timestamp;
           }
 
-          if(dataSnapshot.child("customerPaid").getValue() != null && dataSnapshot.child("driverPaidOut").getValue() == null){
-            if(dataSnapshot.child("distance").getValue() != null){
-              distance = dataSnapshot.child("distance").getValue().toString();
-              ridePrice = (Double.valueOf(distance) * 0.4);
-            }
+          if(dataSnapshot.child("lng").getValue() != null){
+            lng = dataSnapshot.child("lng").getValue().toString();
+            Point.longitude = lng;
+            locationPoi1.setLongitude(Double.parseDouble(lng));
           }
 
+          if(dataSnapshot.child("lat").getValue() != null){
+            lat = dataSnapshot.child("lat").getValue().toString();
+            Point.latitude = lat;
+            locationPoi1.setLatitude(Double.parseDouble(lat));
+
+          }
+
+          if(dataSnapshot.child("Place").getValue() != null){
+            PlaceName = dataSnapshot.child("Place").getValue().toString();
+            Point.namePoint = PlaceName;
+          }
+
+
+          allSavedPoint.add(Point);
+          locationPoi1.setLatitude(41.4036339);
+          locationPoi1.setLongitude(2.1721618);
+          LekuPoi poi1 = new LekuPoi(UUID.randomUUID().toString(), PlaceName, locationPoi1);
+          poi1.setAddress("jhgjkahgjhksg");
+          poi1.setLocation(locationPoi1);
+          poi1.setTitle("echoo Test");
+          CustomPoints.add(poi1);
           // Album a = new Album(rideId.toString(), timestamp.toString(), R.drawable.default_avata);
           // albumList.add(a);
           // adapter.notifyDataSetChanged();
-
-
-          // HistoryObject obj = new HistoryObject(rideId, getDate(timestamp));
-          // resultsHistory.add(obj);
-          // mHistoryAdapter.notifyDataSetChanged();
         }
       }
       @Override
@@ -349,9 +337,10 @@ public class MainActivity_map extends AppCompatActivity {
     return date;
   }
 
-  private ArrayList resultsHistory = new ArrayList<CustomPoint>();
-  private ArrayList<CustomPoint> getDataSetHistory() {
-    return resultsHistory;
+  private ArrayList allSavedPoint = new ArrayList<CustomPoint>();
+  private ArrayList<CustomPoint> getallSavedPoints() {
+
+    return allSavedPoint;
   }
 
 }
