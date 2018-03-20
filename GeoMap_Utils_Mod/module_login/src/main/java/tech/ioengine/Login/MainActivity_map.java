@@ -75,6 +75,7 @@ public class MainActivity_map extends AppCompatActivity {
   List<LekuPoi> CustomPoints = new ArrayList<>();
 
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -120,11 +121,9 @@ public class MainActivity_map extends AppCompatActivity {
         try {
         // reset all list and empty
         CustomPoints.clear();
-        allSavedPoint.clear();
         CustomPoints.removeAll(CustomPoints);
-        allSavedPoint.removeAll(allSavedPoint);
 
-          getAllSavedOnFirebasePoints();
+          //getAllSavedOnFirebasePoints();
           // Thread.sleep(5000);
         } catch (Exception e) {
           e.printStackTrace();
@@ -132,7 +131,7 @@ public class MainActivity_map extends AppCompatActivity {
 
         Intent locationPickerIntent = new LocationPickerActivity.Builder()
                 // .withLocation(41.4036299, 2.1743558)
-                .withPois(CustomPoints)
+                .withPois(getAllSavedOnFirebasePoints())
                 .withGooglePlacesEnabled()
                 .build(getApplicationContext());
 
@@ -255,14 +254,18 @@ public class MainActivity_map extends AppCompatActivity {
 
   /// history  ...
 
-  private void getAllSavedOnFirebasePoints() {
+  private List<LekuPoi>  getAllSavedOnFirebasePoints() {
+    List<LekuPoi> pois = new ArrayList<>();
     DatabaseReference userHistoryDatabase = FirebaseDatabase.getInstance().getReference().child("Points");
     userHistoryDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if(dataSnapshot.exists()){
           for(DataSnapshot history : dataSnapshot.getChildren()){
-            FetchRideInformation(history.getKey());
+            LekuPoi Point = FetchRideInformation(history.getKey());
+            if(Point != null){
+              pois.add(Point);
+            }
           }
         }
       }
@@ -270,9 +273,13 @@ public class MainActivity_map extends AppCompatActivity {
       public void onCancelled(DatabaseError databaseError) {
       }
     });
+
+    return pois;
   }
 
-  private void FetchRideInformation(String PointsKey) {
+  private  LekuPoi FetchRideInformation(String PointsKey) {
+
+    final LekuPoi[] PointGlobal = {null};
     DatabaseReference historyDatabase = FirebaseDatabase.getInstance().getReference().child("Points").child(PointsKey);
     historyDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
       @SuppressLint("SetTextI18n")
@@ -284,51 +291,51 @@ public class MainActivity_map extends AppCompatActivity {
           String PlaceName = "";
           String lat = "";
           String lng = "";
-          CustomPoint Point = new CustomPoint();
-          Location locationPoi1 = new Location("Bee Fire");
+          Location location_point = new Location("Bee Fire");
 
           if(dataSnapshot.child("timestamp").getValue() != null){
             timestamp = dataSnapshot.child("timestamp").getValue().toString();
-            Point.TimeSpan =timestamp;
           }
 
           if(dataSnapshot.child("lng").getValue() != null){
             lng = dataSnapshot.child("lng").getValue().toString();
-            Point.longitude = lng;
-            locationPoi1.setLongitude(Double.parseDouble(lng));
+            location_point.setLongitude(2.1741417);
           }
 
           if(dataSnapshot.child("lat").getValue() != null){
             lat = dataSnapshot.child("lat").getValue().toString();
-            Point.latitude = lat;
-            locationPoi1.setLatitude(Double.parseDouble(lat));
+            location_point.setLatitude(41.4036339);
 
           }
+
+          LekuPoi Point = new LekuPoi(UUID.randomUUID().toString(), "Los bellota", location_point);
+
+
+          Point = new LekuPoi(UUID.randomUUID().toString(), "Starbucks", location_point);
 
           if(dataSnapshot.child("Place").getValue() != null){
             PlaceName = dataSnapshot.child("Place").getValue().toString();
-            Point.namePoint = PlaceName;
+            Point.setAddress(PlaceName);
           }
 
 
-          allSavedPoint.add(Point);
-          locationPoi1.setLatitude(41.4036339);
-          locationPoi1.setLongitude(2.1721618);
-          LekuPoi poi1 = new LekuPoi(UUID.randomUUID().toString(), PlaceName, locationPoi1);
-          poi1.setAddress("jhgjkahgjhksg");
-          poi1.setLocation(locationPoi1);
-          poi1.setTitle("echoo Test");
-          CustomPoints.add(poi1);
-          // Album a = new Album(rideId.toString(), timestamp.toString(), R.drawable.default_avata);
-          // albumList.add(a);
-          // adapter.notifyDataSetChanged();
+          Point.setLocation(location_point);
+          Point.setTitle("echoo Test");
+
+          PointGlobal[0] = Point;
+
         }
       }
       @Override
       public void onCancelled(DatabaseError databaseError) {
       }
     });
+
+    return PointGlobal[0];
   }
+
+
+
 
   private String getDate(Long time) {
     Calendar cal = Calendar.getInstance(Locale.getDefault());
