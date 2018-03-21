@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.api.Response;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +39,7 @@ import com.ioengine.geo_map.LocationPickerActivity;
 import com.ioengine.geo_map.tracker.LocationPickerTracker;
 import com.ioengine.geo_map.tracker.TrackEvents;
 import com.irozon.sneaker.Sneaker;
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import org.json.JSONException;
@@ -59,6 +63,7 @@ public class MainActivity_map extends AppCompatActivity {
   private Context context;
 
   public String NewGooglePlace = "";
+  public String PlaceCharacteristique ="";
 
   // location...
   private double lat;
@@ -75,6 +80,16 @@ public class MainActivity_map extends AppCompatActivity {
   public static  List<CustomPoint> AllPoints = new ArrayList<CustomPoint>();
 
 
+  FloatingActionMenu materialDesignFAM;
+  com.github.clans.fab.FloatingActionButton   About  , TakeNewPoint;
+  private com.github.clans.fab.FloatingActionButton  Licences;
+  private int UpdateClidAfter = 0;
+
+
+  // select  Food shop in dthe umgebung   .....    ....
+  String[] itemsPlaces = new String[9];
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -84,6 +99,18 @@ public class MainActivity_map extends AppCompatActivity {
     setContentView(R.layout.activity_map);
     View mapButton = findViewById(R.id.map_button);
     context = this.getApplicationContext();
+
+
+    // init Items
+    itemsPlaces[0] = "Restaurant";
+    itemsPlaces[1] = "Hotel";
+    itemsPlaces[2] = "School";
+    itemsPlaces[3] = "Hospital";
+    itemsPlaces[4] = "pharmacy";
+    itemsPlaces[5] = "University";
+    itemsPlaces[6] = "crossroads";
+    itemsPlaces[7] = "bank";
+    itemsPlaces[8] = "Place";
 
 
     // init firebase  ...
@@ -140,6 +167,43 @@ public class MainActivity_map extends AppCompatActivity {
         // startActivityForResult(locationPickerIntent, MAP_POIS_BUTTON_REQUEST_CODE);
       }
     });
+
+
+
+    materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
+    About = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.About);
+    TakeNewPoint = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.SaveAnotherPoint);
+    About.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        //TODO something when floating action menu first item clicked
+
+        new MaterialDialog.Builder(MainActivity_map.this)
+                .title(R.string.app_name)
+                .content(R.string.content)
+                .positiveText(R.string.agree)
+                .show();
+
+      }
+    });
+
+
+
+    TakeNewPoint.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+
+
+
+                                        new MaterialDialog.Builder(MainActivity_map.this)
+                                                .title(R.string.app_name)
+                                                .content(R.string.content)
+                                                .positiveText(R.string.agree)
+                                                .show();
+
+                                      }
+                                    }
+
+    );
 
     initializeLocationPickerTracker();
   }
@@ -200,25 +264,41 @@ public class MainActivity_map extends AppCompatActivity {
                   @Override
                   public void onTextInputConfirmed(String text) {
 
-                    Intent intent = new Intent(getBaseContext(), MainActivity_card.class);
                     NewGooglePlace = text.toString();
-                    intent.putExtra("Place_name", NewGooglePlace);
-                    intent.putExtra("Lat", latitude);
-                    intent.putExtra("Long", longitude);
 
 
-                    /*
-                    Sneaker.with(getParent())
-                            .setTitle("Success!!")
-                            .setMessage(" infos ... " + latitude + longitude + NewGooglePlace)
-                            .sneakSuccess();
+                    new LovelyChoiceDialog(MainActivity_map.this, R.style.EditTextTintTheme)
+                            .setTopColorRes(R.color.accent)
+                            .setTitle("Place Type")
+                            .setIcon(R.drawable.ic_tab_infor)
+                            .setItemsMultiChoice(itemsPlaces, new LovelyChoiceDialog.OnItemsSelectedListener<String>() {
+                              @Override
+                              public void onItemsSelected(List<Integer> positions, List<String> items) {
 
-*/
-                    startActivity(intent);
 
+                                for(int i = 0; i < items.size(); i++) {
+                                  PlaceCharacteristique = PlaceCharacteristique + items.get(i).toString() +",";
+                                }
+                                Toast.makeText(MainActivity_map.this,PlaceCharacteristique,
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+
+                                Intent intent = new Intent(getBaseContext(), MainActivity_card.class);
+                                intent.putExtra("Place_name", NewGooglePlace);
+                                intent.putExtra("Lat", latitude);
+                                intent.putExtra("Long", longitude);
+                                intent.putExtra("cht", PlaceCharacteristique);
+                                startActivity(intent);
+                              }
+                            })
+                            .setCancelable(true)
+                            .setConfirmButtonText(R.string.button_ok)
+                            .show();
                   }
                 })
                 .show();
+
+
         // MainActivity_map.this.finish();
 
 

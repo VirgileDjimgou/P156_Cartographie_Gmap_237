@@ -44,7 +44,7 @@ import android.widget.Toast;
 public class MainActivity_App extends AppCompatActivity {
 
 
-    private Button Email_login, facebook_butt , phone_butt;
+    private Button phone_butt;
 
 
     public  static FirebaseAuth auth;
@@ -120,18 +120,6 @@ public class MainActivity_App extends AppCompatActivity {
         //Get Firebase auth instance
         // auth = FirebaseAuth.getInstance();
         waitingDialog = new LovelyProgressDialog(this).setCancelable(false);
-
-        Email_login = (Button) findViewById(R.id.email_connect);
-        // call Facebook Login...
-        Email_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Facebook = new Intent(MainActivity_App.this, EmailLoginActivity.class);
-                startActivity(Facebook);
-                finish();
-            }
-        });
-
 
         // Call Phone Login
         phone_butt = (Button) findViewById(R.id.phone_connect);

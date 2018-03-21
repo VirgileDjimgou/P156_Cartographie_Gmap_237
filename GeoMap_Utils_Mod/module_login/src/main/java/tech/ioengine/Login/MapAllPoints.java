@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,11 +30,13 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -45,6 +48,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,9 +60,12 @@ import com.irozon.sneaker.Sneaker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import tech.ioengine.Login.data.StaticConfig;
+import tech.ioengine.Login.fotopicker.CardPack.MainActivity_card;
 import tech.ioengine.Login.model.CustomPoint;
+import tech.ioengine.Login.model.InfoWindowData;
 
 public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -90,6 +98,7 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng  position_depart_LatLng;
     private String  position_depart ="";
     public static  List<CustomPoint> AllPoints = new ArrayList<CustomPoint>();
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
 
 
@@ -129,7 +138,7 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
 
         Depart_autocompleteFragment = (PlaceAutocompleteFragment)
                 MapAllPoints.this.getFragmentManager().findFragmentById(R.id.place_depart);
-        Depart_autocompleteFragment.setHint("Start point ...");
+        Depart_autocompleteFragment.setHint("google Search ");
         Depart_autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -145,10 +154,14 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
+        mFusedLocationProviderClient = LocationServices
+                .getFusedLocationProviderClient(MapAllPoints.this);
+
+
         mCustomerInfo = (LinearLayout) findViewById(R.id.PointInfos);
         mCustomerInfo.setVisibility(View.GONE);
 
-        mCustomerProfileImage = (ImageView) findViewById(R.id.images1);
+        mCustomerProfileImage = (ImageView) findViewById(R.id.images2);
         // reset point list
 
         try {
@@ -184,24 +197,38 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
 
                 // For dropping a marker at a point on the Map
                 // LatLng sydney = new LatLng(-34, 151);
-                // googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+                // googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").sni
 
-                pickupLatLng = new LatLng(41.4036339,2.1741417);
-                Marker pickupMarker;
-                pickupMarker = mMap.addMarker(new MarkerOptions().position(pickupLatLng).
-                        title("Custom Bee Pickup location").
-                        icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bee_round)));
-
-                // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(pickupLatLng ).zoom(12).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
+                getDeviceLocation();
                 // get all saved Points and add this Points on the Maps
                 getAllSavedOnFirebasePoints();
             }
         });
 
+    }
+
+
+    private void getDeviceLocation() {
+        try {
+                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            Location location = task.getResult();
+                            LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                            // For zooming automatically to the location of the marker
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLatLng ).zoom(12).build();
+                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        }
+                    }
+                });
+
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
     }
 
 
@@ -237,7 +264,9 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                     String PlaceName = "";
                     String lat = "";
                     String lng = "";
+                    String PlaceChar = "";
                     CustomPoint NewPoint = new CustomPoint();
+                    List<Bitmap> Images_of_Point = new ArrayList<Bitmap>();
 
 
                     if(dataSnapshot.child("timestamp").getValue() != null){
@@ -260,25 +289,165 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                     if(dataSnapshot.child("Place").getValue() != null){
                         PlaceName = dataSnapshot.child("Place").getValue().toString();
                         NewPoint.namePoint = PlaceName;
-//            Point.setAddress(PlaceName);
+                    }
+
+                    if(dataSnapshot.child("charac").getValue() != null){
+                        PlaceChar = dataSnapshot.child("charac").getValue().toString();
+                        NewPoint.Charact = PlaceChar;
                     }
 
 
                     if(dataSnapshot.child("Image0")!=null){
-                        Glide.with(MapAllPoints.this).
-                                load("                        https://firebasestorage.googleapis.com/v0/b/beewallet-114e7.appspot.com/o/profile_images%2Fp7GZA1zyn4fnBWGf4b4io6M2IBA3?alt=media&token=1b6152c0-6dcc-407a-833a-9a4f9c63ec38\n").
-                                into(mCustomerProfileImage);
-                        // Glide.with(MapAllPoints.this).load(dataSnapshot.child("Image0").getValue().toString()).into(mCustomerProfileImage);
+                        String ImageUrl0 = dataSnapshot.child("Image0").toString();
+
+
+
+                        Bitmap theBitmap = null;
+                        try {
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(MapAllPoints.this)
+                                            .load(ImageUrl0 )
+                                            .into(-1, -1);
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();}
+                        Images_of_Point.add(theBitmap);
+                        // Glide.with(getApplication()).load(ImageUrl0).into(mCustomerProfileImage);
+                    }
+
+
+                    if(dataSnapshot.child("Image1")!=null){
+                        String ImageUrl0 = dataSnapshot.child("Image1").toString();
+
+                        Bitmap theBitmap = null;
+                        try {
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(MapAllPoints.this)
+                                            .load(ImageUrl0 )
+                                            .into(-1, -1);
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();}
+
+                        Images_of_Point.add(theBitmap);
+                        // Glide.with(getApplication()).load(ImageUrl0).into(mCustomerProfileImage);
+                    }
+
+
+                    if(dataSnapshot.child("Image2")!=null){
+                        String ImageUrl0 = dataSnapshot.child("Image2").toString();
+
+
+                        Bitmap theBitmap = null;
+                        try {
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(MapAllPoints.this)
+                                            .load(ImageUrl0 )
+                                            .into(-1, -1);
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();}
+
+                        Images_of_Point.add(theBitmap);
+                        // Glide.with(getApplication()).load(ImageUrl0).into(mCustomerProfileImage);
+                    }
+
+
+                    if(dataSnapshot.child("Image3")!=null){
+                        String ImageUrl0 = dataSnapshot.child("Image3").toString();
+
+
+                        Bitmap theBitmap = null;
+                        try {
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(MapAllPoints.this)
+                                            .load(ImageUrl0 )
+                                            .into(-1, -1);
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();}
+
+                        Images_of_Point.add(theBitmap);
+                        // Glide.with(getApplication()).load(ImageUrl0).into(mCustomerProfileImage);
+                    }
+
+
+                    if(dataSnapshot.child("Image4")!=null){
+                        String ImageUrl0 = dataSnapshot.child("Image4").toString();
+
+
+                        Bitmap theBitmap = null;
+                        try {
+
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(MapAllPoints.this)
+                                            .load(ImageUrl0 )
+                                            .into(-1, -1);
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();}
+
+
+                        Images_of_Point.add(theBitmap);
+                        // Glide.with(getApplication()).load(theBitmap).into(mCustomerProfileImage);
                     }
 
 
                     pickupLatLng = new LatLng(Double.parseDouble(lat),Double.parseDouble(lng));
+
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(pickupLatLng)
+                            .title(PlaceName)
+                            .snippet("Custom Pickup Place  by Beetech.")
+                            .icon(BitmapDescriptorFactory.defaultMarker( BitmapDescriptorFactory.HUE_BLUE));
+
+
+
+                    InfoWindowData info = new InfoWindowData();
+                    info.setImage("");
+                    info.setHotel("Place Infos : " +PlaceChar);
+                    info.setFood("Infos : excellent hotels and Restaurant available");
+                    info.setTransport("Reach the site with Bee Service .");
+
+
+                    CustomInfoWindowGoogleMap customInfoWindow = new CustomInfoWindowGoogleMap(MapAllPoints.this);
+                    mMap.setInfoWindowAdapter(customInfoWindow);
+
+
+
+                    Marker m = mMap.addMarker(markerOptions);
+                    m.setTag(info);
+                    m.showInfoWindow();
+                    m.setIcon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bee_round));
                     Marker NewMarker;
 
-                    NewMarker = mMap.addMarker(new MarkerOptions().position(pickupLatLng).
-                            title(PlaceName).
-                            icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bee_round)));
 
+                    NewPoint.listImages = Images_of_Point;
                     AllPoints.add(NewPoint);
 
                     //        Point.setLocation(location_point);
@@ -342,11 +511,6 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                 // TODO Auto-generated method stub
                 Log.d("arg0", arg0.latitude + "-" + arg0.longitude);
 
-                Sneaker.with(MapAllPoints.this)
-                        .setTitle("Success!!")
-                        .setMessage(" SUcces  new google Point added !!!" )
-                        .sneakSuccess();
-
                 mCustomerInfo.setVisibility(View.GONE);
             }
 
@@ -359,7 +523,14 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                 // fillTextViews(locAddress);
 
                 marker.showInfoWindow();
-                mCustomerInfo.setVisibility(View.VISIBLE);
+                marker.getId();
+
+                Sneaker.with(MapAllPoints.this)
+                        .setTitle("Marker id !!")
+                        .setMessage(marker.getId().toString())
+                        .sneakSuccess();
+                CustomPoint NewPoint = new CustomPoint();
+                // mCustomerInfo.setVisibility(View.VISIBLE);
 
                 return true;
             }

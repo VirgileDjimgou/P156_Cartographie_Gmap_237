@@ -15,6 +15,7 @@ public class CustomPoint {
     public String latitude = "";
     public String longitude = "";
     public String TimeSpan = "";
+    public String Charact = "";
     public List<Bitmap> listImages = new ArrayList<Bitmap>();
     public CustomPoint(){
     }

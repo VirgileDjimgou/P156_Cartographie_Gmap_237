@@ -27,25 +27,14 @@
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"/>
 
-        <Button
-            android:id="@+id/email_connect"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="106dp"
-            android:background="@drawable/button"
-            android:text="connect with Email"
-            android:textColor="@color/button_text"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginRight="1dp"/>
-
 
 
         <Button
             android:id="@+id/phone_connect"
-            android:layout_width="250dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:background="@drawable/button"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="196dp"
             android:layout_gravity="bottom|center_horizontal"
             android:text="connect with Phone"
             android:textColor="@color/button_text" />
@@ -59,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="2dp"
             android:text="Developed by Bee Technology GmbH"
             android:textColor="@color/button_text"
             android:layout_marginTop="80dp"

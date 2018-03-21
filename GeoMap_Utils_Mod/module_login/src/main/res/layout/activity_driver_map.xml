@@ -48,7 +48,7 @@
 
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view_driver_notification"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="500dp"
             android:layout_gravity="left"
             android:layout_marginBottom="1dp"
@@ -67,47 +67,47 @@
 
                 <ImageView
                     android:id="@+id/images1"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="2dp"
-                    android:src="@drawable/default_avata" />
+                    android:src="@drawable/ic_camera" />
 
 
                 <ImageView
                     android:id="@+id/images2"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="100dp"
-                    android:src="@drawable/default_avata" />
+                    android:src="@drawable/ic_camera" />
 
 
                 <ImageView
                     android:id="@+id/images3"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="200dp"
-                    android:src="@drawable/default_avata" />
+                    android:src="@drawable/ic_camera" />
 
 
                 <ImageView
                     android:id="@+id/images4"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="300dp"
-                    android:src="@drawable/default_avata" />
+                    android:src="@drawable/ic_camera" />
 
 
                 <ImageView
                     android:id="@+id/images5"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="400dp"
-                    android:src="@drawable/default_avata" />
+                    android:src="@drawable/ic_camera" />
 
 
             </FrameLayout>

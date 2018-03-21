@@ -111,7 +111,7 @@ public class MainActivity_card extends AppCompatActivity {
     private List<CloudObjekt> CloudObjektList;
     private Bitmap bitmap;
     private String  place_name ;
-    private String latitude , longitude ;
+    private String latitude , longitude , Placechar="";
     private LovelyProgressDialog waitingDialog;
     private Context context;
     private Activity ActivityInstance;
@@ -125,10 +125,6 @@ public class MainActivity_card extends AppCompatActivity {
     DatabaseReference PointsRef;
     private static List<String> listfilePath = new ArrayList<String>();
 
-    FloatingActionMenu materialDesignFAM;
-    com.github.clans.fab.FloatingActionButton   About  , TakeNewPoint;
-    private com.github.clans.fab.FloatingActionButton  Licences;
-    private int UpdateClidAfter = 0;
 
 
     @Override
@@ -150,6 +146,8 @@ public class MainActivity_card extends AppCompatActivity {
         this.place_name = getIntent().getStringExtra("Place_name");
         this.latitude = getIntent().getStringExtra("Lat");
         this.longitude  = getIntent().getStringExtra("Long");
+        this.Placechar  = getIntent().getStringExtra("cht");
+
 
         Sneaker.with(this)
                 .setTitle("Success!!")
@@ -186,35 +184,7 @@ public class MainActivity_card extends AppCompatActivity {
             }
         };
 
-        
-        materialDesignFAM = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
-        About = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.About);
-        TakeNewPoint = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.SaveAnotherPoint);
-        About.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //TODO something when floating action menu first item clicked
 
-                new MaterialDialog.Builder(MainActivity_card.this)
-                        .title(R.string.app_name)
-                        .content(R.string.content)
-                        .positiveText(R.string.agree)
-                        .show();
-
-            }
-        });
-
-
-
-        TakeNewPoint.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Intent intent = new Intent(MainActivity_card.this, MainActivity_map.class);
-                                                startActivity(intent);
-                                                finish();
-                                            }
-                                        }
-
-        );
 
 
         // initialize fab Button ...
@@ -368,6 +338,7 @@ public class MainActivity_card extends AppCompatActivity {
             map.put("timestamp", date.toString());
             map.put("lat", latitude);
             map.put("lng", longitude);
+            map.put("charac", this.Placechar);
 
 
             for(int i = 0; i < listfilePath.size(); i++) {
@@ -390,6 +361,17 @@ public class MainActivity_card extends AppCompatActivity {
                     .sneakError();
             ex.printStackTrace();
 
+        }
+
+        try {
+            Thread.sleep(2000);
+
+            Intent intent = new Intent(MainActivity_card.this, MainActivity_map.class);
+            startActivity(intent);
+            finish();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
     }

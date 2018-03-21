@@ -164,7 +164,7 @@
     <string name="dialog_watch_only_title">Lookup Address</string>
     <string name="dialog_importing_wallets_title">Importing Wallets?</string>
     <string name="dialog_importing_wallets_text">We have detected %1$d new wallet%2$s in our Bee Wallet folder. Would you like to import: %3$s</string>
-    <string name="dialog_ex_nofull_title">No Full Wallet</string>
+    <string name="you_ordered">characteristic of the place</string>
     <string name="dialog_ex_nofull_text">Watch only wallets can not be exported.</string>
     <string name="dialog_exporting_title">Exporting your Wallet</string>
     <string name="dialog_exporting_text">A copy of your  wallet Information will be placed inside the folder \"BeeWallet\" in the root directory of your Android phone. Please note that other applications that run on your device can technically access any wallets that you have exported. Due to this, we highly recommend erasing all exported wallets from the Bee Wallet manager folder as soon as you have finished backing them up.</string>
