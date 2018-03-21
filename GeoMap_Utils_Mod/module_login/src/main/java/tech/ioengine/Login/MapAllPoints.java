@@ -24,6 +24,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -99,6 +100,10 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
     private String  position_depart ="";
     public static  List<CustomPoint> AllPoints = new ArrayList<CustomPoint>();
     private FusedLocationProviderClient mFusedLocationProviderClient;
+
+
+    FloatingActionMenu CameraViewMap;
+    com.github.clans.fab.FloatingActionButton  TerrainViewMap  , SatViewMap , RoadMap , HybridView;
 
 
 
@@ -193,6 +198,7 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
 
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
                 // googleMap.setMyLocationEnabled(true);
 
                 // For dropping a marker at a point on the Map
@@ -202,6 +208,54 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                 getDeviceLocation();
                 // get all saved Points and add this Points on the Maps
                 getAllSavedOnFirebasePoints();
+            }
+        });
+
+
+
+
+        CameraViewMap= (FloatingActionMenu) findViewById(R.id.cameraView);
+        TerrainViewMap = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.terrain);
+        SatViewMap = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.SatelliteView);
+        HybridView = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.hybrid);
+        RoadMap = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.Roadmap);
+
+        TerrainViewMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO something when floating action menu first item clicked
+
+                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+
+            }
+        });
+
+
+
+        SatViewMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO something when floating action menu first item clicked
+
+                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+
+            }
+        });
+
+
+        HybridView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO something when floating action menu first item clicked
+
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+            }
+        });
+
+        RoadMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO something when floating action menu first item clicked
+
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
             }
         });
 
@@ -220,7 +274,7 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                             LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
                             // For zooming automatically to the location of the marker
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLatLng ).zoom(12).build();
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(currentLatLng ).zoom(14).build();
                             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                         }
                     }
@@ -531,6 +585,10 @@ public class MapAllPoints extends AppCompatActivity implements OnMapReadyCallbac
                         .sneakSuccess();
                 CustomPoint NewPoint = new CustomPoint();
                 // mCustomerInfo.setVisibility(View.VISIBLE);
+
+
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(marker.getPosition()).zoom(14).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 return true;
             }

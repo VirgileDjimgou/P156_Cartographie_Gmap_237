@@ -118,6 +118,90 @@
     </LinearLayout>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginBottom="5dp">
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/CameraView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            fab:menu_animationDelayPerItem="55"
+            fab:menu_backgroundColor="@android:color/transparent"
+            fab:menu_buttonSpacing="1dp"
+            fab:menu_colorPressed="#99d4d4d4"
+            fab:menu_colorRipple="#66efecec"
+            fab:menu_fab_label="Quick Menu"
+            fab:menu_fab_size="normal"
+            fab:menu_icon="@drawable/ic_menu_manage"
+            fab:menu_labels_colorNormal="#333"
+            fab:menu_labels_colorPressed="#444"
+            fab:menu_labels_colorRipple="#66efecec"
+            fab:menu_labels_cornerRadius="1dp"
+            fab:menu_labels_ellipsize="none"
+            fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+            fab:menu_labels_margin="2dp"
+            fab:menu_labels_maxLines="-1"
+            fab:menu_labels_padding="1dp"
+            fab:menu_labels_position="left"
+            fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+            fab:menu_labels_showShadow="true"
+            fab:menu_labels_singleLine="false"
+            fab:menu_labels_textColor="#f2f1f1"
+            fab:menu_labels_textSize="15sp"
+            fab:menu_openDirection="up"
+            fab:menu_shadowColor="#f2f1f1"
+            fab:menu_shadowRadius="1dp"
+            fab:menu_shadowXOffset="1dp"
+            fab:menu_shadowYOffset="1dp"
+            fab:menu_showShadow="true">
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/hybrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_add"
+                fab:fab_label="Hybrid View"
+                fab:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/SatelliteView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_add"
+                fab:fab_label="Satellite View"
+                fab:fab_size="mini" />
+
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/Roadmap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_add"
+                fab:fab_label="Roadmap View"
+                fab:fab_size="mini" />
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/terrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fab_add"
+                fab:fab_label="Terrain View"
+                fab:fab_size="mini" />
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+    </RelativeLayout>
+
+
 
 
 </FrameLayout>
