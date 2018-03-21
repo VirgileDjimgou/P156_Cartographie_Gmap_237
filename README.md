@@ -404,9 +404,9 @@ Note that you need to include your Google Play services key in the sample to be 
 Who made this
 --------------
 
-| <a href="https://github.com/ferranpons"><img src="https://avatars2.githubusercontent.com/u/1225463?v=3&s=460" alt="Ferran Pons" align="left" height="100" width="100" /></a>
+| <a href="https://github.com/IoEngine"><img src="https://avatars0.githubusercontent.com/u/8148309?s=400&u=a293f76a0d32dcda91fcccfbea34b9c61c6ac792&v=4" alt="IoEngine" align="left" height="100" width="100" /></a>
 |---
-| [Ferran Pons](https://github.com/ferranpons)
+| [IoEngine](https://github.com/IoEngine)
 
 
 
@@ -414,7 +414,7 @@ Contribute
 ----------
 
 1. Create an issue to discuss about your idea
-2. [Fork it] (https://github.com/SchibstedSpain/leku/fork)
+2. [Fork it] (https://github.com/IoEngine/Cartographe_Moonlight)
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
@@ -425,13 +425,13 @@ Contribute
 Bugs and Feedback
 -----------------
 
-For bugs, questions and discussions please use the [Github Issues](https://github.com/SchibstedSpain/leku/issues).
+For bugs, questions and discussions please use the [Github Issues](https://github.com/chichikolon/Cartographe_Moonlight/issues).
 
 
 License
 -------
 
-Copyright 2016 Schibsted Classified Media Spain S.L.
+Copyright 2018 Beetech Gmbh S.L.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
