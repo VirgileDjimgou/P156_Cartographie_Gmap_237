@@ -132,16 +132,6 @@ public class MainActivity_App extends AppCompatActivity {
             }
         });
 
-        facebook_butt = (Button) findViewById(R.id.facebook_login);
-        // call Facebook Login...
-        facebook_butt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent Facebook = new Intent(MainActivity_App.this, Facebook_Activity.class);
-                startActivity(Facebook);
-                finish();
-            }
-        });
 
         // Call Phone Login
         phone_butt = (Button) findViewById(R.id.phone_connect);

@@ -123,11 +123,12 @@ public class MainActivity_card extends AppCompatActivity {
     public static String requestIdUpload= "";
     private int COMPRESSION; // not a big diff eh?
     DatabaseReference PointsRef;
-    List<String> listfilePath = new ArrayList<String>();
+    private static List<String> listfilePath = new ArrayList<String>();
 
     FloatingActionMenu materialDesignFAM;
     com.github.clans.fab.FloatingActionButton   About  , TakeNewPoint;
     private com.github.clans.fab.FloatingActionButton  Licences;
+    private int UpdateClidAfter = 0;
 
 
     @Override
@@ -270,7 +271,7 @@ public class MainActivity_card extends AppCompatActivity {
                     for(int i=0; i<image_uris.size(); i++) {
 
                         Uri uri = Uri.fromFile(new File(image_uris.get(i).toString()));// URI, not file, of selected File
-                        uploadImgetoFirebase(uri , i);
+                        uploadImgetoFirebase(uri , i, image_uris.size());
                         Bitmap bitmap = null;
                         try {
 
@@ -306,7 +307,7 @@ public class MainActivity_card extends AppCompatActivity {
                     }
 
                     // upload new points with reference
-                    saveNewPoints();
+                    // saveNewPoints();
 
                 }
                 break;
@@ -316,11 +317,11 @@ public class MainActivity_card extends AppCompatActivity {
 
         if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             number_of_Images = number_of_Images +1;
-            uploadImgetoFirebase(data.getData() , number_of_Images);
+            uploadImgetoFirebase(data.getData(), 0, number_of_Images);
         } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
             number_of_Images = number_of_Images +1;
-            uploadImgetoFirebase(photoUri , number_of_Images);
+            uploadImgetoFirebase(photoUri ,0, number_of_Images);
         }
     }
 
@@ -368,13 +369,10 @@ public class MainActivity_card extends AppCompatActivity {
             map.put("lat", latitude);
             map.put("lng", longitude);
 
-            /*
-            for(int i = 0; i < listfilePath.size(); i++) {
-                map.put("Images"+i, listfilePath.get(i).toString());
-            }
-            */
-            map.put("Images" , listfilePath);
 
+            for(int i = 0; i < listfilePath.size(); i++) {
+                map.put("Image"+i, listfilePath.get(i).toString());
+            }
 
 
             PointsRef.child(requestId).updateChildren(map);
@@ -397,7 +395,9 @@ public class MainActivity_card extends AppCompatActivity {
     }
 
 
-    public void uploadImgetoFirebase( Uri resultUri , int numbImg){
+    public void uploadImgetoFirebase( Uri resultUri , int numbImg , int ImagesSize){
+
+
 
         // Update Card View  ....
         if (resultUri != null) {
@@ -444,7 +444,7 @@ public class MainActivity_card extends AppCompatActivity {
 
                 String requestId = PointsRef.push().getKey();
                 StorageReference filePath = FirebaseStorage.getInstance().getReference().child("GmapImages").child(requestId);
-                listfilePath.add(filePath.toString());
+
 
                 // PointsRef.child("filePathPhoto"+numbImg).setValue(filePath);
                 // StorageReference filePath = FirebaseStorage.getInstance().getReference().child("GmapImages").child(number_of_Images+"-#"+requestIdUpload);
@@ -485,10 +485,17 @@ public class MainActivity_card extends AppCompatActivity {
                         Map newImage = new HashMap();
                         newImage.put("ImageUrl", downloadUrl.toString());
                         mDriverDatabase.updateChildren(newImage);
-                        Sneaker.with(MainActivity_card.this)
-                                .setTitle("Success!!")
-                                .setMessage("success !!")
-                                .sneakSuccess();
+                        listfilePath.add( downloadUrl.toString());
+
+                        if(numbImg == ImagesSize-1){
+                            saveNewPoints();
+                            Sneaker.with(MainActivity_card.this)
+                                    .setTitle("Success!!")
+                                    .setMessage("success !!")
+                                    .sneakSuccess();
+
+
+                        }
                     }
                 });
 
@@ -569,6 +576,7 @@ public class MainActivity_card extends AppCompatActivity {
     private void showFileChooser() {
         Config config = new Config();
         config.setToolbarTitleRes(R.string.custom_title);
+        config.setCameraHeight(R.dimen.app_defaulsize_w);
         config.setSelectionMin(1);
         config.setSelectionLimit(5);
         config.setFlashOn(true);

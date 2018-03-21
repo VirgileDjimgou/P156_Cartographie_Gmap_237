@@ -156,11 +156,6 @@
             android:screenOrientation="portrait"/>
 
 
-        <activity android:name="tech.ioengine.Login.activity.Facebook_Activity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name" />
-
         <activity android:name="tech.ioengine.Login.activity.SplaschScreen"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>

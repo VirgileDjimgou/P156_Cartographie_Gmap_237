@@ -2,10 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:background="@drawable/ebe_main_screen"
+    android:background="@color/accent"
     android:layout_height="match_parent">
-
-
 
 
     <LinearLayout
@@ -53,13 +51,6 @@
             android:textColor="@color/button_text" />
 
 
-        <Button
-            android:id="@+id/facebook_login"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/fb_loginv2" />
 
 
 
@@ -71,7 +62,7 @@
             android:layout_marginBottom="10dp"
             android:text="Developed by Bee Technology GmbH"
             android:textColor="@color/button_text"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="80dp"
             android:layout_gravity="bottom|center_horizontal"
             android:textStyle="bold"
             android:textSize="15dp" />
