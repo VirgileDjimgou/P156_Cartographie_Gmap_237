@@ -1,4 +1,4 @@
-# Cartography-android
+# Cartographer-android
 
 An Android App for generating / assiociating Custom Place (geographical local Name )
  with  goole Maps Points . this able ist able to communicate with Firebase Backend
@@ -6,20 +6,19 @@ An Android App for generating / assiociating Custom Place (geographical local Na
 
 
 <!--
-  Title: Leku - Map location picker for Android
+  Title: Cartographer -android - Map location picker for Android
   Description: Google Maps based Tools for Android that returns a latitude, longitude and an address based on the location picked with the Activity provided.
-  Author: SchibstedSpain
+  Author: Beetech.
   -->
 
-<img src="media/leku_logo.png" align="left" height="128px" />
+<img src="media/bee_black.png" align="left" height="128px" />
 <img align="left" width="0" height="128px" hspace="10" />
 
 <div style="display:block; height: 168px;">
-* <i>The location Picker for Android</i> *
+* <i>The location Picker for Android supported by Firebase and Google Cloud</i> *
 
-[![Build Status](https://travis-ci.org/SchibstedSpain/Leku.svg?branch=master)](https://travis-ci.org/SchibstedSpain/Leku) [ ![Bintray](https://api.bintray.com/packages/schibstedspain/maven/leku/images/download.svg) ](https://bintray.com/schibstedspain/maven/leku/_latestVersion) [ ![Leku Trending](http://starveller.sigsev.io/api/repos/SchibstedSpain/Leku/badge) ](http://starveller.sigsev.io/SchibstedSpain/Leku)
 
-Component library for Android that uses Google Maps and returns a latitude, longitude and an address based on the location picked with the Activity provided.
+Component library  / Module for Android that uses Google Maps and returns a latitude, longitude and an address based on the location picked with the Activity provided.
 </div>
 
 <br/>
@@ -41,8 +40,6 @@ Component library for Android that uses Google Maps and returns a latitude, long
 <b><a href="#extra">Extra</a></b>
 |
 <b><a href="#who-made-this">Who Made This</a></b>
-|
-<b><a href="#apps-using-leku">Apps using Leku</a></b>
 |
 <b><a href="#contribute">Contribute</a></b>
 |
