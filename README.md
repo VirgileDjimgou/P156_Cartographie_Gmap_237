@@ -85,23 +85,6 @@ allprojects {
 }
 ```
 
-Include the dependency in your app `build.gradle`:
-
-```groovy
-dependencies {
-    implementation 'com.schibstedspain.android:leku:4.0.1'
-}
-```
-
-Alternatively, if you are using a different version of Google Play Services than `11.8.0` use this instead:
-
-```groovy
-implementation ('com.schibstedspain.android:leku:4.0.1') {
-    exclude group: 'com.google.android.gms'
-    exclude group: 'com.android.support'
-}
-```
-
 
 ### Permissions
 
@@ -120,43 +103,10 @@ The following permissions are not required to use Google Maps Android API v2, bu
 * **android.permission.WRITE_EXTERNAL_STORAGE**   Allows the API to cache map tile data in the device's external storage area.
 
 
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-<uses-feature android:name="android.hardware.location.network" android:required="false" />
-<uses-feature android:name="android.hardware.location.gps" android:required="false"  />
-```
-
 You must also explicitly declare that your app uses the android.hardware.location.network or android.hardware.location.gps hardware features if your app targets Android 5.0 (API level 21) or higher and uses the ACCESS_COARSE_LOCATION or ACCESS_FINE_LOCATION permission in order to receive location updates from the network or a GPS, respectively.
 
 **Note**: It supports runtime permissions for *Android 6 (Marshmallow)*. You don't need to do anything, it will ask for permissions if needed.
 
-
-### Usage
-
-To use the LocationPickerActivity first you need to add these lines to your AndroidManifest file:
-
-```xml
-<activity
-    android:name="com.schibstedspain.leku.LocationPickerActivity"
-    android:label="@string/leku_title_activity_location_picker"
-    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-    android:windowSoftInputMode="adjustPan"
-    android:parentActivityName=".MainActivity">
-    <intent-filter>
-        <action android:name="android.intent.action.SEARCH" />
-    </intent-filter>
-    <meta-data android:name="android.app.searchable"
-        android:resource="@xml/leku_searchable" />
-    <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".MainActivity" />
-</activity>
-```
 
 Then you have setup the call to start this activity wherever you like, always as startActivityForResult.
 You can set a default location, search zone and other customizable parameters to load when you start the activity.
@@ -166,7 +116,7 @@ You only need to use the Builder setters like:
 Intent intent = new LocationPickerActivity.Builder()
     .withLocation(41.4036299, 2.1743558)
     .withGeolocApiKey("<PUT API KEY HERE>")
-    .withSearchZone("es_ES")
+    .withSearchZone("de_DE")
     .shouldReturnOkOnBackPressed()
     .withStreetHidden()
     .withCityHidden()
@@ -212,7 +162,7 @@ That's all folks!
 
 #### Google Places
 
-Leku now supports Google Places queries using the search box. If you want to enable it these are the steps you need to follow:
+Bee Cartographer supports Google Places queries using the search box. If you want to enable it these are the steps you need to follow:
 
 1. You need to replace your old `com.google.android.maps.v2.API_KEY` meta-data for the `com.google.android.geo.API_KEY`
 
@@ -313,7 +263,7 @@ intent.putExtra(LocationPickerActivity.LAYOUTS_TO_HIDE, "street|city|zipcode");
 By default the search will be restricted to a zone determined by your default locale. If you want to force the search zone you can do it by adding this line with the locale preferred:
 
 ```java
-intent.putExtra(LocationPickerActivity.SEARCH_ZONE, "es_ES");
+intent.putExtra(LocationPickerActivity.SEARCH_ZONE, "de_DE");
 ```
 
 ##### Force return location on back pressed
@@ -362,7 +312,7 @@ Available tracking events are:
 
 In few cases, the geocoding service from Android fails due to an issue with the NetworkLocator. The only way of fixing this is rebooting the device.
 
-In order to cover these cases, you can instruct Leku to use the Geocoding API. To enable it, just use the method '''withGeolocApiKey''' when invoking the LocationPicker.
+In order to cover these cases, you can instruct BeeTech to use the Geocoding API. To enable it, just use the method '''withGeolocApiKey''' when invoking the LocationPicker.
 
 You should provide your Server Key as parameter. Keep in mind that the free tier only allows 2,500 requests per day. You can track how many times is it used in the Developer Console from Google. 
 
@@ -441,7 +391,7 @@ Now you have all you need. :)
 
 ##### Important
 
-Searching using the "SearchView" (geocoder) will be restricted to a zone if you are with a Locale from: US, UK, France, Italy and Spain. If not, the search will return results from all the world.
+Searching using the "SearchView" (geocoder) will be restricted to a zone if you are with a Locale from: DE, France, Cameroon. If not, the search will return results from all the world.
 
 
 Sample usage
@@ -458,24 +408,6 @@ Who made this
 |---
 | [Ferran Pons](https://github.com/ferranpons)
 
-
-#### Contributors
-
-<a href="https://github.com/DiegoMillanR"><img src="https://avatars0.githubusercontent.com/u/9133635?v=3&s=460" alt="Diego Millán" align="left" height="80" width="80" /></a> | <a href="https://github.com/gerardpedrenyscmspain"><img src="https://avatars0.githubusercontent.com/u/9216185?v=3&s=460" alt="Gerard Pedreny" align="left" height="80" width="80" /></a> | <a href="https://github.com/marcserrascmspain"><img src="https://avatars1.githubusercontent.com/u/8959720?v=3&s=460" alt="Marc Serra" align="left" height="80" width="80" /></a> | <a href="https://github.com/sergiocastilloscmspain"><img src="https://avatars2.githubusercontent.com/u/8904364?v=3&s=460" alt="Sergio Castillo" align="left" height="80" width="80" /></a> | <a href="https://github.com/alorma"><img src="https://avatars3.githubusercontent.com/u/887462?v=3&s=460" alt="Bernat Borras" align="left" height="80" width="80" /></a> | <a href="https://github.com/CristianGM"><img src="https://avatars2.githubusercontent.com/u/6890500?v=3&s=460" alt="Cristian García" align="left" height="80" width="80" /></a>
----|---|---|---|---|---|
-[Diego Millán](https://github.com/DiegoMillanR) | [Gerard Pedreny](https://github.com/gerardpedrenyscmspain) | [Marc Serra](https://github.com/marcserrascmspain) | [Sergio Castillo](https://github.com/sergiocastilloscmspain) | [Bernat Borras](https://github.com/alorma) | [Cristian García](https://github.com/CristianGM)
-
-
-Apps using Leku
----------------
-
-The following is a list of some of the public apps using Leku and are published on the Google Play Store.
-
-Want to add your app? Found an app that no longer works or no longer uses Leku? Please submit a pull request on GitHub to update this page!
-
-| <a href="https://play.google.com/store/apps/details?id=com.anuntis.segundamano"><img src="media/vibbo_logo.png" align="left" width="68px" height="68px"/></a> | <a href="https://play.google.com/store/apps/details?id=com.scmspain.worksi"><img src="media/worksi_logo.png" align="left" width="68px" height="68px"/></a> | <a href="https://play.google.com/store/apps/details?id=nl.hnogames.domoticz"><img src="media/domoticz_logo.png" align="left" width="68px" height="68px"/></a>
-|---|---|---
-| [vibbo](https://play.google.com/store/apps/details?id=com.anuntis.segundamano) | [Worksi](https://play.google.com/store/apps/details?id=com.scmspain.worksi) | [Domoticz](https://play.google.com/store/apps/details?id=nl.hnogames.domoticz)
 
 
 Contribute
