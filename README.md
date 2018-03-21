@@ -57,7 +57,7 @@ Component library  / Module for Android that uses Google Maps and returns a lati
 ### Features
 
 <img align="right" width="0" height="368px" hspace="20"/>
-<img src="media/screenshot.gif" height="368px" align="right" />
+<img src="media/app.gif" height="368px" align="right" />
 
 * Search by voice
 * Search by text
