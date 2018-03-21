@@ -10,9 +10,14 @@ An Android App for generating / assiociating Custom Place (geographical local Na
   Description: Google Maps based Tools for Android that returns a latitude, longitude and an address based on the location picked with the Activity provided.
   Author: Beetech.
   -->
+  
+ 
 
 <img src="media/bee_black.png" align="left" height="128px" />
 <img align="left" width="0" height="128px" hspace="10" />
+
+<img src="media/Ioengine.jpg" align="left" height="128px" />
+<img align="right" width="0" height="128px" hspace="10" />
 
 <div style="display:block; height: 168px;">
 * <i>The location Picker for Android supported by Firebase and Google Cloud</i> *
