@@ -3,12 +3,15 @@ package tech.ioengine.Login.activity;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import tech.ioengine.Login.R;
+import tech.ioengine.Login.Utility.UiUtils;
 import tech.ioengine.Login.data.FriendDB;
 import tech.ioengine.Login.data.GroupDB;
 import tech.ioengine.Login.data.SharedPreferenceHelper;
@@ -220,6 +224,8 @@ public class EmailLoginActivity extends AppCompatActivity {
         }
     }
 
+
+
     class AuthUtils {
         /**
          * Action register
@@ -270,6 +276,7 @@ public class EmailLoginActivity extends AppCompatActivity {
                                 newUser.phone = Phone_numb;
                                 newUser.email = user.getEmail();
                                 newUser.name = Username;
+                                newUser.UID_Android_Phone = UiUtils.getUID_Android(getApplicationContext());
                                 newUser.avata = StaticConfig.STR_DEFAULT_BASE64;
                                 // FirebaseDatabase.getInstance().getReference().child("Driver/"+ user.getUid()).setValue(newUser);
 
@@ -326,8 +333,8 @@ public class EmailLoginActivity extends AppCompatActivity {
                                 }
                                         .setTopColorRes(R.color.colorAccent)
                                         .setIcon(R.drawable.ic_person_low)
-                                        .setTitle("Login false")
-                                        .setMessage("Email not exist or wrong password!")
+                                        .setTitle("Login false. please contact Bee service")
+                                        .setMessage("Email not exist or wrong password ... please contact Bee service!")
                                         .setCancelable(false)
                                         .setConfirmButtonText("Ok")
                                         .show();
@@ -418,9 +425,12 @@ public class EmailLoginActivity extends AppCompatActivity {
                         waitingDialog.dismiss();
                         HashMap hashUser = (HashMap) dataSnapshot.getValue();
                         User userInfo = new User();
+                        // control if  the control ist ok  ...
+
                         userInfo.name = (String) hashUser.get("name");
                         userInfo.email = (String) hashUser.get("email");
                         userInfo.avata = (String) hashUser.get("avata");
+                        userInfo.UID_Android_Phone = (String) hashUser.get("UIA");
                         StaticConfig.STR_EXTRA_USERNAME =  userInfo.name;
                         StaticConfig.STR_EXTRA_EMAIL = userInfo.email;
                         SharedPreferenceHelper.getInstance(EmailLoginActivity.this).saveUserInfo(userInfo);

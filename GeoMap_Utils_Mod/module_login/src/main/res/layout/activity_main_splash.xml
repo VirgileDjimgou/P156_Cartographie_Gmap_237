@@ -36,7 +36,7 @@
             android:background="@drawable/button"
             android:layout_marginTop="196dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:text="connect with Phone"
+            android:text="connect with a Bee ID"
             android:textColor="@color/button_text" />
 
 

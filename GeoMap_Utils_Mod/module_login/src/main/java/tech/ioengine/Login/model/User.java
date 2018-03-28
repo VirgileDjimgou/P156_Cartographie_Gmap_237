@@ -9,6 +9,7 @@ public class User {
     public String avata;
     public String phone;
     public Status status;
+    public String UID_Android_Phone;
     public Message message;
 
 

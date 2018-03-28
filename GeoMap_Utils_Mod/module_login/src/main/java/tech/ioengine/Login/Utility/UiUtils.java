@@ -13,7 +13,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -22,6 +24,7 @@ import android.view.View;
 import tech.ioengine.Login.R;
 import tech.ioengine.Login.buildConfig;
 import tech.ioengine.Login.data.Preferences;
+import android.provider.Settings.Secure;
 
 
 /**
@@ -29,6 +32,27 @@ import tech.ioengine.Login.data.Preferences;
  */
 public class UiUtils {
 
+
+
+    public static String getUID_Android(Context context){
+        String android_id ="";
+        try{
+            android_id = Settings.Secure.getString(context.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return android_id;
+    }
+
+    public String getMacAddress(Context context) {
+        WifiManager wimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        String macAddress = wimanager.getConnectionInfo().getMacAddress();
+        if (macAddress == null) {
+            macAddress = "Device don't have mac address or wi-fi is disabled";
+        }
+        return macAddress;
+    }
 
     public static String getFormattedDistance(float distance, Context context) {
         String distanceStr = String.valueOf(distance) + " ";

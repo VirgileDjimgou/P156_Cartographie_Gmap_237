@@ -77,31 +77,6 @@
                 android:textColor="@color/button_text" />
 
 
-            <Button
-                android:id="@+id/button_verify_phone"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/button"
-                android:text="@string/verify_phone_auth"
-                android:textColor="@color/button_text" />
-
-
-            <Button
-                android:id="@+id/button_resend"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/button"
-                android:text="@string/resend_phone_auth"
-                android:textColor="@color/button_text" />
-
-
-
-
-
             <EditText
                 android:id="@+id/field_verification_code"
                 android:layout_width="210dp"

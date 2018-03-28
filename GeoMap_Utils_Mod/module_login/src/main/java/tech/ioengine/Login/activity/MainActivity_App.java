@@ -44,7 +44,7 @@ import android.widget.Toast;
 public class MainActivity_App extends AppCompatActivity {
 
 
-    private Button phone_butt;
+    private Button Email_butt;
 
 
     public  static FirebaseAuth auth;
@@ -122,12 +122,12 @@ public class MainActivity_App extends AppCompatActivity {
         waitingDialog = new LovelyProgressDialog(this).setCancelable(false);
 
         // Call Phone Login
-        phone_butt = (Button) findViewById(R.id.phone_connect);
-        phone_butt.setOnClickListener(new View.OnClickListener() {
+        Email_butt = (Button) findViewById(R.id.phone_connect);
+        Email_butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // AlertBaustelle();
-                Intent Phone_auth = new Intent(MainActivity_App.this, PhoneAuthActivity.class);
+                Intent Phone_auth = new Intent(MainActivity_App.this, EmailLoginActivity.class);
                 // startActivity(new Intent(this, MainActivityPhone.class));
                 // donate.putExtra("TO_ADDRESS", "0xa9981a33f6b1A18da5Db58148B2357f22B44e1e0");
                 startActivity(Phone_auth);

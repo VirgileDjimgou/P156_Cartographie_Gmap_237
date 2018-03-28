@@ -54,7 +54,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         View.OnClickListener {
 
     EditText mPhoneNumberField, mVerificationField;
-    Button mStartButton, mVerifyButton, mResendButton;
+    Button mStartButton;
     private String phoneNumber;
 
 
@@ -84,8 +84,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         mPhoneNumberField = (EditText) findViewById(tech.ioengine.Login.R.id.field_phone_number);
         mVerificationField = (EditText) findViewById(tech.ioengine.Login.R.id.field_verification_code);
         mStartButton = (Button) findViewById(tech.ioengine.Login.R.id.button_start_verification);
-        mVerifyButton = (Button) findViewById(tech.ioengine.Login.R.id.button_verify_phone);
-        mResendButton = (Button) findViewById(tech.ioengine.Login.R.id.button_resend);
         Registration_Phone = (Button) findViewById(tech.ioengine.Login.R.id.button_register_with_phone);
         Registration_Phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +104,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         });
 
         mStartButton.setOnClickListener(this);
-        mVerifyButton.setOnClickListener(this);
-        mResendButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -360,24 +356,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                     return;
                 }
                 startPhoneNumberVerification(phoneNumber);
-                break;
-            case tech.ioengine.Login.R.id.button_verify_phone:
-                if (!validatePhoneNumber()) {
-                    return;
-                }
-                String code = mVerificationField.getText().toString();
-                if (TextUtils.isEmpty(code)) {
-                    mVerificationField.setError("Cannot be empty.");
-                    return;
-                }
-
-                verifyPhoneNumberWithCode(mVerificationId, code);
-                break;
-            case tech.ioengine.Login.R.id.button_resend:
-                if (!validatePhoneNumber()) {
-                    return;
-                }
-                resendVerificationCode(phoneNumber, mResendToken);
                 break;
         }
 
