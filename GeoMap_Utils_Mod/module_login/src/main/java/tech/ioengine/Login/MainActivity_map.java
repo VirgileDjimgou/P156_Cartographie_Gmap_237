@@ -33,12 +33,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ioengine.geo_map.LekuPoi;
-import com.ioengine.geo_map.LocationPicker;
-import com.ioengine.geo_map.LocationPickerActivity;
-import com.ioengine.geo_map.tracker.LocationPickerTracker;
-import com.ioengine.geo_map.tracker.TrackEvents;
 import com.irozon.sneaker.Sneaker;
+import com.schibstedspain.leku.LekuPoi;
+import com.schibstedspain.leku.LocationPicker;
+import com.schibstedspain.leku.LocationPickerActivity;
+import com.schibstedspain.leku.tracker.LocationPickerTracker;
+import com.schibstedspain.leku.tracker.TrackEvents;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
