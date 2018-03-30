@@ -5,7 +5,7 @@ def playServicesVersion = '11.8.0'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "login.ioengine.tech.beestreetcompleter"
+        applicationId "tech.ioengine.login"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
