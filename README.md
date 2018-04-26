@@ -1,4 +1,4 @@
-# Cartographer-android
+# Cartographer-android google StreetCompleter
 
 An Android App for generating / assiociating Custom Place (geographical local Name )
  with  goole Maps Points . this able ist able to communicate with Firebase Backend
@@ -11,11 +11,6 @@ An Android App for generating / assiociating Custom Place (geographical local Na
   Author: Beetech.
   -->
   
- 
-
-<img src="media/bee_black.png" align="left" height="128px" />
-<img align="left" width="0" height="128px" hspace="10" />
-
 <img src="media/Ioengine.jpg" align="left" height="128px" />
 <img align="right" width="0" height="128px" hspace="10" />
 
@@ -433,7 +428,7 @@ For bugs, questions and discussions please use the [Github Issues](https://githu
 License
 -------
 
-Copyright 2018 Beetech Gmbh S.L.
+Copyright 2018 djimgou Virgile .
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
