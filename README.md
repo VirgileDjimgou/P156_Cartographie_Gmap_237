@@ -401,9 +401,9 @@ Note that you need to include your Google Play services key in the sample to be 
 Who made this
 --------------
 
-| <a href="https://github.com/IoEngine"><img src="https://avatars0.githubusercontent.com/u/8148309?s=400&u=a293f76a0d32dcda91fcccfbea34b9c61c6ac792&v=4" alt="IoEngine" align="left" height="100" width="100" /></a>
+| <a href="https://github.com/VirgileDjimgou"><img src="https://avatars1.githubusercontent.com/u/8148300?s=400&v=4" alt="IoEngine" align="left" height="100" width="100" /></a>
 |---
-| [IoEngine](https://github.com/IoEngine)
+| [VirgileDjimgou](https://github.com/VirgileDjimgou)
 
 
 
@@ -428,7 +428,7 @@ For bugs, questions and discussions please use the [Github Issues](https://githu
 License
 -------
 
-Copyright 2018 djimgou Virgile .
+Copyright 2017 djimgou Virgile .
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
