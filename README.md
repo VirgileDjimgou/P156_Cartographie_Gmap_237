@@ -411,7 +411,7 @@ Contribute
 ----------
 
 1. Create an issue to discuss about your idea
-2. [Fork it] (https://github.com/IoEngine/Cartographe_Moonlight)
+2. [Fork it] (https://github.com/VirgileDjimgou/P156_Cartographie_Gmap_237)
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
@@ -422,7 +422,7 @@ Contribute
 Bugs and Feedback
 -----------------
 
-For bugs, questions and discussions please use the [Github Issues](https://github.com/chichikolon/Cartographe_Moonlight/issues).
+For bugs, questions and discussions please use the [Github Issues](https://github.com/VirgileDjimgou/P156_Cartographie_Gmap_237/issues).
 
 
 License
