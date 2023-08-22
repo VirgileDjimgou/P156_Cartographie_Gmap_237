@@ -1,5 +1,7 @@
 # Cartographer-android google StreetCompleter
 
+Android Anwendung zur Generierung von zusätzlichen Punkten auf einer Karte , die zusammen mit Google Geolocation and Maps benutzen werden, können. Diese Anwendung hat mehr Wert in Ländern (z. B. in Kamerun), wo die lokale Strassenbenennung von Google Maps nicht bekannt ist.
+
 An Android App for generating / assiociating Custom Place (geographical local Name )
  with  goole Maps Points . this able ist able to communicate with Firebase Backend
  , save the new Custom Points/Places , re-use / viewing that with google geolocation Api / google maps .
